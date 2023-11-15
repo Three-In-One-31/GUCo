@@ -15,10 +15,16 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    comment = models.TextField()
+    content = models.TextField()
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_comments')
 
-    replys = models.ManyToManyField('self', related_name='comment', symmetrical=False)
+
+class Reply(models.Model):
+    content = models.TextField()
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    comment = models.ManyToManyField(Comment, symmetrical=False)
