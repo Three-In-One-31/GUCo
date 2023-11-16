@@ -1,5 +1,8 @@
 <div class="card">
-    <div class="card-header">작성자</div>
+    <div class="card-header">
+        <img src="{{ post.user.profile_image.url }}" alt="" class="rounded-circle" width="30px">
+        {{ post.user }}
+    </div>
     <img src="{{ post.image.url }}" alt="">
     <div class="card-body">
         <p class="cart-text">{{ post.content }}</p>
