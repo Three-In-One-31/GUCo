@@ -45,8 +45,8 @@ def logout(request):
 
 
 def profile(request, username):
-    user = User.objects.get(username=username)
+    profileuser = User.objects.get(username=username)
     context = {
-        'user': user,
+        'profileuser': profileuser,
     }
     return render(request, 'profile.html', context)
