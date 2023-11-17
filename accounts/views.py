@@ -50,3 +50,15 @@ def profile(request, username):
         'profileuser': profileuser,
     }
     return render(request, 'profile.html', context)
+
+
+def follows(request, username):
+    me = request.user
+    profileuser = User.objects.get(username=username)
+
+    if profileuser in me.followings.all():
+        me.followings.remove(profileuser)
+    else:
+        me.followings.add(profileuser)
+
+    return redirect('accounts:profile', username=username)

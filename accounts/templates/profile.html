@@ -3,21 +3,27 @@
 {% block body %}
     <div class="row">
         <div class="col-4">
-            {% if profileuser.profile %}
-            <img src="{{ profileuser.profile_image.url }}" alt="" class="rounded=circle img-fluid">
+            {% if profileuser.profile_image %}
+                <img src="{{ profileuser.profile_image.url }}" alt="" class="rounded=circle img-fluid">
             {% else %}
-            <img src="/media/profile/default.jpeg" alt="" class="rounded=circle img-fluid">
+                <img src="/media/profile/default.jpeg" alt="" class="rounded=circle img-fluid">
             {% endif %}
         </div>
         <div class="col-8">
             <div class="row">
                 {{ profileuser }}
-                <a href="" class="btn btn-light">follow</a>
+                {% if user != profileuser %}
+                    {% if user in profileuser.followers.all %}
+                        <a href="{% url 'accounts:follows' username=profileuser %}" class="btn">following</a>
+                    {% else %}
+                        <a href="{% url 'accounts:follows' username=profileuser %}" class="btn">follow</a>
+                    {% endif %}
+                {% endif %}
             </div>
             <div class="row">
                 <div class="col">게시물 {{ profileuser.post_set.all|length }}</div>
-                <div class="col">팔로워</div>
-                <div class="col">팔로우</div>
+                <div class="col">팔로워 {{ profileuser.followers.all|length }}</div>
+                <div class="col">팔로우 {{ profileuser.followings.all|length }}</div>
             </div>
         </div>
     </div>
