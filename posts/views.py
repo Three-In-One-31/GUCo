@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import Post
-from .forms import PostForm
+from .models import Post, Comment
+from accounts.models import User
+from .forms import PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -8,9 +9,11 @@ from django.contrib.auth.decorators import login_required
 
 def index(request):
     posts = Post.objects.all().order_by('-id')
+    form = CommentForm()
 
     context = {
         'posts': posts,
+        'form': form,
     }
 
     return render(request, 'index.html', context)
@@ -37,22 +40,10 @@ def create(request):
 
 
 @login_required
-def likes(request, id):
-    user = request.user
-    post = Post.objects.get(id=id)
-
-    if user in post.like_users.all():
-        post.like_users.remove(user)
-    else:
-        post.like_users.add(user)
-
-    return redirect('posts:index')
-
-
-@login_required
 def delete(request, id):
     post = Post.objects.get(id=id)
-    post.delete()
+    if request.user == post.user:
+        post.delete()
 
     return redirect('posts:index')
 
@@ -60,6 +51,9 @@ def delete(request, id):
 @login_required
 def update(request, id):
     post = Post.objects.get(id=id)
+
+    if request.user != post.user:
+        return redirect('posts:index')
 
     if request.method == 'POST':
         form = PostForm(request.POST, instance=post)
@@ -78,3 +72,14 @@ def update(request, id):
 
     return render(request, 'form.html', context)
 
+
+@login_required
+def comment_create(request, post_id):
+    form = CommentForm(request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.post_id = post_id
+        comment.user = request.user
+        comment.save()
+
+        return redirect('posts:index')
