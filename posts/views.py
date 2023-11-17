@@ -89,7 +89,7 @@ def comment_create(request, post_id):
 def comment_delete(request, post_id, id):
     comment = Comment.objects.get(id=id)
 
-    if request.user != post.user:
+    if request.user != comment.user:
         return redirect('posts:index')
     
     else:
