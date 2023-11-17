@@ -55,3 +55,26 @@ def delete(request, id):
     post.delete()
 
     return redirect('posts:index')
+
+
+@login_required
+def update(request, id):
+    post = Post.objects.get(id=id)
+
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            return redirect('posts:index')
+    
+    else:
+        form = PostForm(instance=post)
+
+    context = {
+        'form': form
+    }
+
+    return render(request, 'form.html', context)
+
