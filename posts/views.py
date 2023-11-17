@@ -96,3 +96,4 @@ def comment_delete(request, post_id, id):
         comment.delete()
 
     return redirect('posts:index')
+
