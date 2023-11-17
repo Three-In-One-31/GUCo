@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-4">
+            {% if user.profile %}
+            <img src="{{ user.profile.url }}" alt="" class="rounded=circle img-fluid">
+            {% else %}
+            <img src="/media/profile/default.jpeg" alt="" class="rounded=circle img-fluid">
+            {% endif %}
+        </div>
+        <div class="col-8">
+            <div class="row">
+                {{ user }}
+                <a href="" class="btn btn-light">follow</a>
+            </div>
+            <div class="row">
+                <div class="col">게시물 {{ user.post_set.all|length }}</div>
+                <div class="col">팔로워</div>
+                <div class="col">팔로우</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-cols-3">
+        {% for post in user.post_set.all %}
+            <div class="col">
+                <div class="card">
+                    <img src="{{ post.image.url }}" alt="">
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

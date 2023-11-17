@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
+from .models import User
 
 
 # Create your views here.
@@ -41,3 +42,11 @@ def login(request):
 def logout(request):
     auth_logout(request)
     return redirect('accounts:pre_index')
+
+
+def profile(request, username):
+    user = User.objects.get(username=username)
+    context = {
+        'user': user,
+    }
+    return render(request, 'profile.html', context)
