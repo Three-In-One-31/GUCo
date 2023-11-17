@@ -5,7 +5,7 @@
         {% else %}
             <img src="/media/profile/default.jpeg" alt="" class="rounded-circle" width="30px">
         {% endif %}
-        
+
         {{ post.user }}
 
         {% if user == post.user %}
@@ -20,6 +20,9 @@
         <form action="{% url 'posts:comment_create' post_id=post.id %}" method="POST">
             {% csrf_token %}
             {{ form }}
+            {% if user == comment.user %}
+            <a href="{% url 'posts:comment_delete' post_id=post.id id=comment.id %}">Delete</a>
+            {% endif %}
             <input type="submit">
         </form>
     </div>

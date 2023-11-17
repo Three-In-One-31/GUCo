@@ -83,3 +83,16 @@ def comment_create(request, post_id):
         comment.save()
 
         return redirect('posts:index')
+
+
+@login_required
+def comment_delete(request, post_id, id):
+    comment = Comment.objects.get(id=id)
+
+    if request.user != post.user:
+        return redirect('posts:index')
+    
+    else:
+        comment.delete()
+
+    return redirect('posts:index')
