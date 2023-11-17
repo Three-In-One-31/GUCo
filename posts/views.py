@@ -47,3 +47,11 @@ def likes(request, id):
         post.like_users.add(user)
 
     return redirect('posts:index')
+
+
+@login_required
+def delete(request, id):
+    post = Post.objects.get(id=id)
+    post.delete()
+
+    return redirect('posts:index')
