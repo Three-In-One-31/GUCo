@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-4">
             {% if profileuser.profile %}
-            <img src="{{ profileuser.profile.url }}" alt="" class="rounded=circle img-fluid">
+            <img src="{{ profileuser.profile_image.url }}" alt="" class="rounded=circle img-fluid">
             {% else %}
             <img src="/media/profile/default.jpeg" alt="" class="rounded=circle img-fluid">
             {% endif %}
