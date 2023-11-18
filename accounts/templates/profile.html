@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-4">
+            {% if profileuser.profile_image %}
+                <img src="{{ profileuser.profile_image.url }}" alt="" class="rounded=circle img-fluid">
+            {% else %}
+                <img src="/media/profile/default.jpeg" alt="" class="rounded=circle img-fluid">
+            {% endif %}
+        </div>
+        <div class="col-8">
+            <div class="row">
+                {{ profileuser }}
+                {% if user != profileuser %}
+                    {% if user in profileuser.followers.all %}
+                        <a href="{% url 'accounts:follows' username=profileuser %}" class="btn">following</a>
+                    {% else %}
+                        <a href="{% url 'accounts:follows' username=profileuser %}" class="btn">follow</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <div class="row">
+                <div class="col">게시물 {{ profileuser.post_set.all|length }}</div>
+                <div class="col">팔로워 {{ profileuser.followers.all|length }}</div>
+                <div class="col">팔로우 {{ profileuser.followings.all|length }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-cols-3">
+        {% for post in profileuser.post_set.all %}
+            <div class="col">
+                <div class="card">
+                    <img src="{{ post.image.url }}" alt="">
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
