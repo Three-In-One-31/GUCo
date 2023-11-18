@@ -1,7 +1,45 @@
-<div class="card">
-    <div class="card-header">작성자</div>
+{% load bootstrap5 %}
+
+<div class="card my-3 col-12 col-md-6">
+    
+    <div class="card-header">
+        {% if post.user.profile_image %}
+            <img src="{{ post.user.profile_image.url }}" alt="" class="rounded-circle" width="30px">
+        {% else %}
+            <img src="/media/profile/default.jpeg" alt="" class="rounded-circle" width="30px">
+        {% endif %}
+
+        {{ post.user }}
+
+        {% if user == post.user %}
+        <a href="{% url 'posts:update' id=post.id %}">Update</a>
+        <a href="{% url 'posts:delete' id=post.id %}">Delete</a>
+        {% endif %}
+    </div>
+
     <img src="{{ post.image.url }}" alt="">
+
     <div class="card-body">
         <p class="cart-text">{{ post.content }}</p>
     </div>
+
+    <hr>
+
+    {% if user.is_authenticated %}
+        <form action="{% url 'posts:comment_create' post_id=post.id %}" method="POST">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit">
+        </form>
+    {% endif %}
+    
+    <hr>
+
+    {% for comment in post.comment_set.all %}
+        {{ comment.user }} : {{ comment.content }}
+        {% if user == comment.user %}
+            <a href="{% url 'posts:comment_delete' post_id=post.id id=comment.id %}">Delete</a>
+        {% endif %}
+    {% endfor %}
+
 </div>
