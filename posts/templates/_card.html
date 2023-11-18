@@ -9,7 +9,7 @@
             <img src="/media/profile/default.jpeg" alt="" class="rounded-circle" width="30px">
         {% endif %}
 
-        {{ post.user }}
+        <a href="{% url 'accounts:profile' username=post.user %}" class="text-reset text-decoration-none">{{ post.user }}</a>
 
         {% if user == post.user %}
         <a href="{% url 'posts:update' id=post.id %}">Update</a>
