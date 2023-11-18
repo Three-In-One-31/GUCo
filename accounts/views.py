@@ -6,16 +6,12 @@ from .models import User
 
 
 # Create your views here.
-def pre_index(request):
-    return render(request, 'pre_index.html')
-
-
 def signup(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('accounts:pre_index')
+            return redirect('posts:index')
     else:
         form = CustomUserCreationForm()
     context ={
@@ -30,7 +26,7 @@ def login(request):
         if form.is_valid():
             auth_login(request, form.get_user())
             next_url = request.GET.get('next')
-            return redirect(next_url or 'accounts:pre_index')
+            return redirect(next_url or 'posts:index')
     else:
         form = CustomAuthenticationForm()
     context = {
@@ -41,7 +37,7 @@ def login(request):
 
 def logout(request):
     auth_logout(request)
-    return redirect('accounts:pre_index')
+    return redirect('posts:index')
 
 
 def profile(request, username):
