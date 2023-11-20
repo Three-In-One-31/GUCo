@@ -27,17 +27,15 @@
 
     <div class="card-body">
         <p class="card-text">{{ post.content }}</p>
-    </div>
-
-    <div>
-        {% if post.comment_set.all|length != 0 %}
-            <hr>
+        <hr>
+        {% if post.comment_set.all|length == 0 %}
+        <p>댓글이 없습니다.</p>
         {% endif %}
-    </div>
-    
-    {% for comment in post.comment_set.all %}
-    {% if user == comment.user %}
-    <div style="margin-bottom: 3px; background-color: rgb(247, 247, 247); display: flex; flex-direction: row; justify-content: space-between;">
+        
+        
+        {% for comment in post.comment_set.all %}
+        {% if user == comment.user %}
+        <div style="margin-bottom: 3px; background-color: rgb(247, 247, 247); display: flex; flex-direction: row; justify-content: space-between;">
         <p>{{ comment.user }} : {{ comment.content }} </p>
         <a style="text-align: right;" href="{% url 'posts:comment_delete' post_id=post.id id=comment.id %}">Delete</a>
     </div>
@@ -49,11 +47,12 @@
     {% endfor %}
     
     {% if user.is_authenticated %}
-        <form action="{% url 'posts:comment_create' post_id=post.id %}" method="POST">
-            {% csrf_token %}
-            {{ form }}
-            <input type="submit">
-        </form>
+    <form action="{% url 'posts:comment_create' post_id=post.id %}" method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit">
+    </form>
     {% endif %}
+    </div>
 
 </div>
