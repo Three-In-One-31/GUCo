@@ -1,6 +1,6 @@
 {% load bootstrap5 %}
 
-<div class="card my-3 col-12 col-md-6">
+<div class="card my-3 col-12 col-md-5 mx-2">
     
     <div class="card-header">
         {% if post.user.profile_image %}
@@ -20,6 +20,12 @@
     <img src="{{ post.image.url }}" alt="">
 
     <div class="card-body">
+        {% if user in post.like_users.all %}
+            <i class="bi bi-heart-fill heart" style="color:red" data-post-id="{{ post.id }}">{{ post.like_users.all|length }}</i>
+        {% else %}
+            <i class="bi bi-heart heart" data-post-id="{{ post.id }}">{{ post.like_users.all|length }}</i>
+        {% endif %}
+        명이 좋아합니다.
         <p class="cart-text">{{ post.content }}</p>
     </div>
 

@@ -3,6 +3,7 @@ from .models import Post, Comment
 from accounts.models import User
 from .forms import PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -97,3 +98,24 @@ def comment_delete(request, post_id, id):
 
     return redirect('posts:index')
 
+
+
+@login_required
+def likes_async(request, id):
+    user = request.user
+    post = Post.objects.get(id=id)
+
+    if user in post.like_users.all():
+        post.like_users.remove(user)
+        status = False
+
+    else:
+        post.like_users.add(user)
+        status = True
+
+    context = {
+        'status': status,
+        'count': len(post.like_users.all()),
+    }
+
+    return JsonResponse(context)
