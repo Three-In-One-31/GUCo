@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Post, Comment
 from accounts.models import User
-from .forms import PostForm, CommentForm
+from .forms import PostForm, CommentForm, ReplyForm
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -10,10 +10,12 @@ from django.contrib.auth.decorators import login_required
 def index(request):
     posts = Post.objects.all().order_by('-id')
     form = CommentForm()
+    reply_form = ReplyForm()
 
     context = {
         'posts': posts,
         'form': form,
+        'reply_form': reply_form,
     }
 
     return render(request, 'index.html', context)
@@ -97,3 +99,15 @@ def comment_delete(request, post_id, id):
 
     return redirect('posts:index')
 
+
+@login_required
+def reply_create(request, post_id, id):
+    reply_form = ReplyForm(request.POST)
+    if reply_form.is_valid():
+        reply = reply_form.save(commit=False)
+        reply.post_id = post_id
+        reply.user = request.user
+        reply.comment_id = id
+        reply.save()
+        
+    return redirect('posts:index')

@@ -41,6 +41,23 @@
             {% if user == comment.user %}
                 <a href="{% url 'posts:comment_delete' post_id=post.id id=comment.id %}">Delete</a>
             {% endif %}
+
+            {% for reply in comment.reply_set.all %}
+                <div>
+                    <style>
+                    div.in {text-indent: 30px;}
+                    </style>
+                    <div class="in">{{ reply.user }} : {{ reply.content }}</div>
+                </div>
+            {% endfor %}
+
+            {% if user.is_authenticated %}
+                <form action="{% url 'posts:reply_create' post_id=post.id id=comment.id %}" method="POST">
+                    {% csrf_token %}
+                    {{ reply_form }}
+                    <input type="submit">
+                </form>
+            {% endif %}
         </div>
     {% endfor %}
 
