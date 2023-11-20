@@ -3,6 +3,7 @@ from .models import Post, Comment
 from accounts.models import User
 from .forms import PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 # Create your views here.
 

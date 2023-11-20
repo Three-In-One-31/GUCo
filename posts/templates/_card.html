@@ -20,10 +20,15 @@
     <img src="{{ post.image.url }}" alt="">
 
     <div class="card-body">
-        <p class="cart-text">{{ post.content }}</p>
+        <p class="card-text">{{ post.content }}</p>
     </div>
 
-    <hr>
+    <div>
+        {% if post.comment_set.all|length != 0 %}
+            <hr>
+        {% endif %}
+    </div>
+
 
     {% if user.is_authenticated %}
         <form action="{% url 'posts:comment_create' post_id=post.id %}" method="POST">
@@ -33,7 +38,6 @@
         </form>
     {% endif %}
     
-    <hr>
 
     {% for comment in post.comment_set.all %}
         {{ comment.user }} : {{ comment.content }}
