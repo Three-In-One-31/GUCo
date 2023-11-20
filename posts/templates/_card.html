@@ -51,14 +51,17 @@
                 </div>
             {% endfor %}
 
-            {% if user.is_authenticated %}
-                <form action="{% url 'posts:reply_create' post_id=post.id id=comment.id %}" method="POST">
-                    {% csrf_token %}
-                    {{ reply_form }}
-                    <input type="submit">
-                </form>
-            {% endif %}
-        </div>
+                <p class="replybutton">답글 달기</p>
+                <div class="replyform_div" style="display: none;">
+                    {% if user.is_authenticated %}
+                    <form action="{% url 'posts:reply_create' post_id=post.id id=comment.id %}" method="POST">
+                        {% csrf_token %}
+                        {{ reply_form }}
+                        <input type="submit">
+                    </form>
+                    {% endif %} 
+                </div>
+
     {% endfor %}
 
 </div>

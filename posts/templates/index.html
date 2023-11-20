@@ -6,4 +6,11 @@
             {% include '_card.html' %}
         {% endfor %}
     </div>
+
+    <script> 
+        $('.replybutton').click(function(){
+        $(this).next('.replyform_div').toggle();
+        });    
+    </script>
+    
 {% endblock %}
