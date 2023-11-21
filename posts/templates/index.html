@@ -8,9 +8,30 @@
     </div>
 
     <script> 
+        // reply fomr toggle
         $('.replybutton').click(function(){
         $(this).next('.replyform_div').toggle();
         });    
+
+        // reply create
+        let replyForms = document.querySelectorAll('.reply-Form')
+        replyForms.forEach(function(replyForm){
+            replyForm.addEventListener('submit', function(event){
+                event.preventDefault()
+                const data = new FormData(event.target)
+                axios.post(event.target.action, data)
+                    .then(function(response){
+                    const reply = response.data
+                    const replyList = document.querySelector(
+                        `#reply-list-${reply.postId}-${reply.commentId}`)
+                    const newReply = `<div class="in">
+                                ${ reply.username } : ${ reply.content }
+                            </div>`
+                    replyList.insertAdjacentHTML('beforeEnd', newReply)
+                    event.target.reset()
+                    })
+            })
+        })
     </script>
     
 {% endblock %}

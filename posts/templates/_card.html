@@ -42,26 +42,24 @@
                 <a href="{% url 'posts:comment_delete' post_id=post.id id=comment.id %}">Delete</a>
             {% endif %}
 
+            <ul id="reply-list-{{ post.id }}-{{ comment.id }}">
+                <style>div.in {text-indent: 5px;}</style>
             {% for reply in comment.reply_set.all %}
-                <div>
-                    <style>
-                    div.in {text-indent: 30px;}
-                    </style>
                     <div class="in">{{ reply.user }} : {{ reply.content }}</div>
-                </div>
             {% endfor %}
+            </ul>
 
                 <p class="replybutton">답글 달기</p>
                 <div class="replyform_div" style="display: none;">
                     {% if user.is_authenticated %}
-                    <form action="{% url 'posts:reply_create' post_id=post.id id=comment.id %}" method="POST">
+                    <form action="{% url 'posts:reply_create' post_id=post.id id=comment.id %}" method="POST" class="reply-Form">
                         {% csrf_token %}
                         {{ reply_form }}
                         <input type="submit">
                     </form>
                     {% endif %} 
                 </div>
-
+        </div>            
     {% endfor %}
 
 </div>

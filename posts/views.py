@@ -3,6 +3,7 @@ from .models import Post, Comment
 from accounts.models import User
 from .forms import PostForm, CommentForm, ReplyForm
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -109,5 +110,11 @@ def reply_create(request, post_id, id):
         reply.user = request.user
         reply.comment_id = id
         reply.save()
-        
-    return redirect('posts:index')
+
+    return JsonResponse({
+                            'id': reply.id,
+                            'postId': post_id,
+                            'commentId': id,
+                            'username': reply.user.username,
+                            'content': reply.content,
+    })
