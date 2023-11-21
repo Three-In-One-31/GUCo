@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Post, Comment
+from .models import Post, Comment, Reply
 from accounts.models import User
 from .forms import PostForm, CommentForm, ReplyForm
 from django.contrib.auth.decorators import login_required
@@ -102,19 +102,32 @@ def comment_delete(request, post_id, id):
 
 
 @login_required
-def reply_create(request, post_id, id):
+def reply_create(request, post_id, comment_id):
     reply_form = ReplyForm(request.POST)
     if reply_form.is_valid():
         reply = reply_form.save(commit=False)
         reply.post_id = post_id
         reply.user = request.user
-        reply.comment_id = id
+        reply.comment_id = comment_id
         reply.save()
 
     return JsonResponse({
                             'id': reply.id,
                             'postId': post_id,
-                            'commentId': id,
+                            'commentId': comment_id,
                             'username': reply.user.username,
                             'content': reply.content,
     })
+
+
+@login_required
+def reply_delete(request, post_id, comment_id, id):
+    reply = Reply.objects.get(id=id)
+
+    if request.user != reply.user:
+        return redirect('posts:index')
+    
+    else:
+        reply.delete()
+    
+    return redirect('posts:index')

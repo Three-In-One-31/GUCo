@@ -26,6 +26,7 @@
                         `#reply-list-${reply.postId}-${reply.commentId}`)
                     const newReply = `<div class="in">
                                 ${ reply.username } : ${ reply.content }
+                                <a href="/posts/${reply.postId}/comments/${reply.commentId}/replys/${reply.id}/delete">Delete</a>
                             </div>`
                     replyList.insertAdjacentHTML('beforeEnd', newReply)
                     event.target.reset()
