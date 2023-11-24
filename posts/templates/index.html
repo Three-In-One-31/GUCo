@@ -37,4 +37,35 @@
         }
     </script>
 
+    <script>
+        let comment_likeButtons = document.querySelectorAll("i.comment_heart")
+
+        comment_likeButtons.forEach((comment_likeButton)=>{            
+            comment_likeButton.addEventListener("click", (event)=>{
+                let postId = event.target.dataset.postId
+                let commentId = event.target.dataset.commentId 
+                comment_likeRequest(event.target, postId, commentId)
+            })
+        })
+
+        let comment_likeRequest = async (button, postId, commentId) => {
+            let likeURL = `/posts/${postId}/comments/${commentId}/likes-async/`
+            let response = await fetch(likeURL)
+            let result = await response.json()
+
+            if (result.status) {
+                button.classList.remove('bi-heart', 'comment_heart')
+                button.classList.add('bi-heart-fill', 'comment_heart')
+                button.style.color = 'red'
+                button.innerHTML = result.count
+                
+            } else {
+                button.classList.remove('bi-heart-fill', 'comment_heart')
+                button.classList.add('bi-heart', 'comment_heart')
+                button.style.color = 'black'
+                button.innerHTML = result.count
+            }
+        }
+    </script>
+
 {% endblock %}

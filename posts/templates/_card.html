@@ -43,9 +43,21 @@
 
     {% for comment in post.comment_set.all %}
         {{ comment.user }} : {{ comment.content }}
-        {% if user == comment.user %}
+        <div class="card-body">
+            {% if user in comment.like_users.all %}
+                <i class="bi bi-heart-fill comment_heart" style="color:red" data-post-id="{{ post.id }}" data-comment-id="{{ comment.id }}">{{ comment.like_users.all|length }}</i> 
+            {% else %}
+                <i class="bi bi-heart comment_heart" data-post-id="{{ post.id }}" data-comment-id="{{ comment.id }}">{{ comment.like_users.all|length }}</i>                
+            {% endif %}
+            
+
+            {% if user == comment.user %}
             <a href="{% url 'posts:comment_delete' post_id=post.id id=comment.id %}">Delete</a>
-        {% endif %}
+            {% endif %}
+            명이 좋아합니다.
+        </div>
+
+
     {% endfor %}
 
 </div>

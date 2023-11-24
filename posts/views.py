@@ -119,3 +119,28 @@ def likes_async(request, id):
     }
 
     return JsonResponse(context)
+
+
+
+@login_required
+def comment_likes_async(request, post_id, id):
+    user = request.user
+    post = Post.objects.get(id=post_id)
+    comment = Comment.objects.get(id=id)
+
+    if user in comment.like_users.all():
+        comment.like_users.remove(user)
+        status = False
+
+    else:
+        comment.like_users.add(user)
+        status = True
+
+    context = {
+        'status': status,
+        'count': len(comment.like_users.all()),
+        'post_id': post.id,
+        'comment_id': comment.id,
+    }
+
+    return JsonResponse(context)
