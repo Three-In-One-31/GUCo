@@ -140,3 +140,28 @@ def reply_delete(request, post_id, comment_id, id):
         }
     
     return HttpResponse(json.dumps(data, cls=DjangoJSONEncoder), content_type = 'application/json')
+
+
+@login_required
+def reply_update(request, post_id, comment_id, id):
+    reply = Reply.objects.get(id=id)
+
+    if request.user != reply.user:
+        return redirect('posts:index')
+
+    if request.method == 'POST':
+        form = ReplyForm(request.POST, instance=reply)
+        if form.is_valid():
+            reply = form.save(commit=False)
+            reply.user = request.user
+            reply.save()
+            return redirect('posts:index')
+    
+    else:
+        form = ReplyForm(instance=reply)
+
+    context = {
+        'form': form
+    }
+
+    return render(request, 'form.html', context)
