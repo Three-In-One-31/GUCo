@@ -47,7 +47,7 @@
             {% for reply in comment.reply_set.all %}
                     <div class="in">{{ reply.user }} : {{ reply.content }}
                 {% if user == reply.user %}
-                    <a href="{% url 'posts:reply_delete' post_id=post.id comment_id=comment.id id=reply.id %}">Delete</a>
+                    <button onclick="replyDelete('{{post.id}},{{comment.id}},{{reply.id}}');">Delete</button>
                 {% endif %}
                     </div>
             {% endfor %}
