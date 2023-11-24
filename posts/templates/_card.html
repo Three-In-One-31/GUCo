@@ -48,7 +48,8 @@
                     <div class="in">{{ reply.user }} : {{ reply.content }}
                 {% if user == reply.user %}
                     <button onclick="replyDelete('{{post.id}},{{comment.id}},{{reply.id}}');">Delete</button>
-                    <a href="{% url 'posts:reply_update' post_id=post.id comment_id=comment.id id=reply.id %}">Update</a>   
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#replyModal{{ post.id }}-{{ comment.id }}-{{ reply.id }}">Update</button>
+                        {% include '_replymodal.html' %}
                 {% endif %}
                     </div>
             {% endfor %}

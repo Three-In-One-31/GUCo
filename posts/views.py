@@ -150,18 +150,12 @@ def reply_update(request, post_id, comment_id, id):
         return redirect('posts:index')
 
     if request.method == 'POST':
-        form = ReplyForm(request.POST, instance=reply)
-        if form.is_valid():
-            reply = form.save(commit=False)
-            reply.user = request.user
-            reply.save()
-            return redirect('posts:index')
-    
-    else:
-        form = ReplyForm(instance=reply)
-
-    context = {
-        'form': form
+        reply.content = request.POST.get('reply_content')
+        reply.save()
+        data = {
+        'reply_id': id,
+        'post_id': post_id,
+        'comment_id' : comment_id,
     }
 
-    return render(request, 'form.html', context)
+    return HttpResponse(json.dumps(data, cls=DjangoJSONEncoder), content_type = 'application/json')
