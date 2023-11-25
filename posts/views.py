@@ -4,6 +4,10 @@ from accounts.models import User
 from .forms import PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.http import HttpResponse
+import json
+from django.core import serializers
+from django.core.serializers.json import DjangoJSONEncoder
 
 # Create your views here.
 
@@ -100,8 +104,12 @@ def comment_delete(request, post_id, id):
     
     else:
         comment.delete()
+        data = {
+            'post_id': post_id,
+            'comment_id' : id,
+        }
 
-    return redirect('posts:index')
+    return HttpResponse(json.dumps(data, cls=DjangoJSONEncoder), content_type = 'application/json')
 
 
 
