@@ -7,6 +7,8 @@
         {% endfor %}
     </div>
 
+
+    // post like
     <script>
         let likeButtons = document.querySelectorAll("i.heart")
 
@@ -37,6 +39,29 @@
         }
     </script>
 
+
+    // comment create
+    <script> 
+    let commentForm = document.querySelector('.comment-Form')
+    commentForm.addEventListener('submit', function(event){
+        event.preventDefault()
+        const data = new FormData(event.target)
+        axios.post(event.target.action, data)
+            .then(function(response){
+            const comment = response.data
+            const commentList = document.querySelector(
+                `#comment-list-${comment.postId}`)
+            const newComment = `<div class="in">
+                        ${ comment.username } : ${ comment.content }
+                    </div>`
+            commentList.insertAdjacentHTML('beforeEnd', newComment)
+            event.target.reset()
+            })
+    })
+    </script>
+
+
+    // comment like
     <script>
         let comment_likeButtons = document.querySelectorAll("i.comment_heart")
 

@@ -31,6 +31,7 @@
 
     <hr>
 
+    <ul id="comment-list-{{ post.id }}">
     {% for comment in post.comment_set.all %}
         <div style="display: flex; align-items: center;">
             <div>{{ comment.user }} : {{ comment.content }}</div>
@@ -47,10 +48,11 @@
             </div>            
         </div>
     {% endfor %}
+    </ul>
 
 
     {% if user.is_authenticated %}
-    <form action="{% url 'posts:comment_create' post_id=post.id %}" method="POST">
+    <form action="{% url 'posts:comment_create' post_id=post.id %}" method="POST" class="comment-Form">
         {% csrf_token %}
         {{ comment_form }}
         <input type="submit" value="Submit">

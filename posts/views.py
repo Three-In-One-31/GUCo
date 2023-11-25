@@ -83,8 +83,12 @@ def comment_create(request, post_id):
         comment.post_id = post_id
         comment.save()
 
-        return redirect('posts:index')
-        
+    return JsonResponse({
+                            'id': comment.id,
+                            'postId': post_id,
+                            'username': comment.user.username,
+                            'content': comment.content,
+    })
 
 
 @login_required
