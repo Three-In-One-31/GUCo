@@ -51,7 +51,8 @@
     {% if user.is_authenticated %}
         <form action="{% url 'posts:comment_create' post_id=post.id %}" method="POST">
             {% csrf_token %}
-            {{ form }}
+            {{ form.comment.label_tag }}
+            <textarea name="comment" rows="2" cols="50">{{ form.comment.value }}</textarea>
             <input type="submit">
         </form>
     {% endif %}
