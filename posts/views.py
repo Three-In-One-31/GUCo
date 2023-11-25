@@ -79,11 +79,12 @@ def comment_create(request, post_id):
     form = CommentForm(request.POST)
     if form.is_valid():
         comment = form.save(commit=False)
+        comment.user_id = request.user.id
         comment.post_id = post_id
-        comment.user = request.user
         comment.save()
 
         return redirect('posts:index')
+        
 
 
 @login_required

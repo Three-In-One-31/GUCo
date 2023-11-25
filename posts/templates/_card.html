@@ -32,18 +32,19 @@
     <hr>
 
     {% for comment in post.comment_set.all %}
-        {{ comment.user }} : {{ comment.content }}
-        <div class="card-body">
-            {% if user in comment.like_users.all %}
-                <i class="bi bi-heart-fill comment_heart" style="color:red" data-post-id="{{ post.id }}" data-comment-id="{{ comment.id }}">{{ comment.like_users.all|length }}</i> 
-            {% else %}
-                <i class="bi bi-heart comment_heart" data-post-id="{{ post.id }}" data-comment-id="{{ comment.id }}">{{ comment.like_users.all|length }}</i>                
-            {% endif %}
-            명이 좋아합니다.
-            
-            {% if user == comment.user %}
-            <a href="{% url 'posts:comment_delete' post_id=post.id id=comment.id %}">Delete</a>
-            {% endif %}
+        <div style="display: flex; align-items: center;">
+            <div>{{ comment.user }} : {{ comment.content }}</div>
+            <div class="card-body" style="margin-left: auto;">
+                {% if user in comment.like_users.all %}
+                    <i class="bi bi-heart-fill comment_heart" style="color:red" data-post-id="{{ post.id }}" data-comment-id="{{ comment.id }}">{{ comment.like_users.all|length }}</i> 
+                {% else %}
+                    <i class="bi bi-heart comment_heart" data-post-id="{{ post.id }}" data-comment-id="{{ comment.id }}">{{ comment.like_users.all|length }}</i>                
+                {% endif %}
+                명이 좋아합니다.
+                {% if user == comment.user %}
+                <a href="{% url 'posts:comment_delete' post_id=post.id id=comment.id %}">Delete</a>
+                {% endif %}
+            </div>            
         </div>
     {% endfor %}
 
@@ -51,8 +52,7 @@
     {% if user.is_authenticated %}
         <form action="{% url 'posts:comment_create' post_id=post.id %}" method="POST">
             {% csrf_token %}
-            {{ form.comment.label_tag }}
-            <textarea name="comment" rows="2" cols="50">{{ form.comment.value }}</textarea>
+            {{ form }}
             <input type="submit">
         </form>
     {% endif %}
