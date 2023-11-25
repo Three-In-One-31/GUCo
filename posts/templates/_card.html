@@ -31,16 +31,6 @@
 
     <hr>
 
-    {% if user.is_authenticated %}
-        <form action="{% url 'posts:comment_create' post_id=post.id %}" method="POST">
-            {% csrf_token %}
-            {{ form }}
-            <input type="submit">
-        </form>
-    {% endif %}
-    
-    <hr>
-
     {% for comment in post.comment_set.all %}
         {{ comment.user }} : {{ comment.content }}
         <div class="card-body">
@@ -51,13 +41,22 @@
             {% endif %}
             명이 좋아합니다.
             
-
             {% if user == comment.user %}
             <a href="{% url 'posts:comment_delete' post_id=post.id id=comment.id %}">Delete</a>
             {% endif %}
         </div>
-
-
     {% endfor %}
+
+
+    {% if user.is_authenticated %}
+        <form action="{% url 'posts:comment_create' post_id=post.id %}" method="POST">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit">
+        </form>
+    {% endif %}
+    
+    <hr>
+
 
 </div>
