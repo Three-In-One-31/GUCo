@@ -50,11 +50,11 @@
 
 
     {% if user.is_authenticated %}
-        <form action="{% url 'posts:comment_create' post_id=post.id %}" method="POST">
-            {% csrf_token %}
-            {{ form }}
-            <input type="submit">
-        </form>
+    <form action="{% url 'posts:comment_create' post_id=post.id %}" method="POST">
+        {% csrf_token %}
+        {{ comment_form }}
+        <input type="submit" value="Submit">
+    </form>
     {% endif %}
     
     <hr>

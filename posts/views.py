@@ -10,11 +10,11 @@ from django.http import JsonResponse
 
 def index(request):
     posts = Post.objects.all().order_by('-id')
-    form = CommentForm()
+    comment_form = CommentForm()
 
     context = {
         'posts': posts,
-        'form': form,
+        'comment_form': comment_form,
     }
 
     return render(request, 'index.html', context)
@@ -76,10 +76,10 @@ def update(request, id):
 
 @login_required
 def comment_create(request, post_id):
-    form = CommentForm(request.POST)
-    if form.is_valid():
-        comment = form.save(commit=False)
-        comment.user_id = request.user.id
+    comment_form = CommentForm(request.POST)
+    if comment_form.is_valid():
+        comment = comment_form.save(commit=False)
+        comment.user = request.user
         comment.post_id = post_id
         comment.save()
 
