@@ -96,6 +96,30 @@ def comment_create(request, post_id):
 
 
 @login_required
+def comment_update(request, post_id, id):
+    comment = Comment.objects.get(id=id)
+
+    if request.user != comment.user:
+        return redirect('posts:index')
+    
+    if request.method == 'POST':
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.save()
+            return redirect('posts:index')
+
+    else:
+        form = CommentForm(instance=comment)
+
+    context = {
+        'form': form
+    }
+
+    return render(request, 'form.html', context)
+
+@login_required
 def comment_delete(request, post_id, id):
     comment = Comment.objects.get(id=id)
 

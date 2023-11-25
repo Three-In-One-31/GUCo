@@ -43,6 +43,7 @@
                 {% endif %}
                 명이 좋아합니다.
                 {% if user == comment.user %}
+                <a href="{% url 'posts:comment_update' post_id=post.id id=comment.id %}">Update</a>   
                 <button onclick="commentDelete('{{post.id}},{{comment.id}}');">Delete</button>
                 {% endif %}
             </div>            
