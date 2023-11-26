@@ -42,8 +42,8 @@
                 <i class="bi bi-heart comment_heart" data-post-id="{{ post.id }}" data-comment-id="{{ comment.id }}" onclick="comment_likeRequest(this, '{{ post.id }}', '{{ comment.id }}')">{{ comment.like_users.all|length }}명이 좋아합니다.</i>                
                 {% endif %}
                 {% if user == comment.user %}
-                <a href="{% url 'posts:comment_update' post_id=post.id id=comment.id %}">Update</a>   
-                <button onclick="commentDelete('{{post.id}},{{comment.id}}');">Delete</button>
+                <a href="{% url 'posts:comment_update' post_id=post.id id=comment.id %}" class="btn btn-light">Update</a>   
+                <button class="btn btn-light" onclick="commentDelete('{{post.id}},{{comment.id}}');">Delete</button>
                 {% endif %}
             </div>            
         </div>

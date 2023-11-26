@@ -103,21 +103,15 @@ def comment_update(request, post_id, id):
         return redirect('posts:index')
     
     if request.method == 'POST':
-        form = CommentForm(request.POST, instance=comment)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.user = request.user
-            comment.save()
-            return redirect('posts:index')
-
-    else:
-        form = CommentForm(instance=comment)
-
-    context = {
-        'form': form
+        comment.content = request.POST.get('comment_content')
+        comment.save()
+        data = {
+        'comment_id': id,
+        'post_id': post_id,
     }
 
-    return render(request, 'form.html', context)
+    return HttpResponse(json.dumps(data, cls=DjangoJSONEncoder), content_type = 'application/json')
+
 
 @login_required
 def comment_delete(request, post_id, id):

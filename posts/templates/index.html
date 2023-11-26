@@ -42,23 +42,25 @@
 
     <!-- comment create -->
     <script> 
-    let commentForm = document.querySelector('.comment-Form')
-    commentForm.addEventListener('submit', function(event){
-        event.preventDefault()
-        const data = new FormData(event.target)
-        axios.post(event.target.action, data)
-            .then(function(response){
-            const comment = response.data
-            const commentList = document.querySelector(
-                `#comment-list-${comment.postId}`)
-            const newComment = `<div class="in">
-                ${comment.username} : ${comment.content}
-                <i class="bi bi-heart comment_heart" data-post-id="${comment.postId}" data-comment-id="${comment.id}" onclick="comment_likeRequest(this, '${comment.postId}', '${comment.id}')">0명이 좋아합니다.</i>
-                <button onclick="commentDelete('${comment.postId},${comment.id}');">Delete</button>
-            </div>`;
-            commentList.insertAdjacentHTML('beforeEnd', newComment)
-            event.target.reset()
+    let commentForms = document.querySelectorAll('.comment-Form')
+    commentForms.forEach(function(commentForm){    
+        commentForm.addEventListener('submit', function(event){
+            event.preventDefault()
+            const data = new FormData(event.target)
+            axios.post(event.target.action, data)
+                .then(function(response){
+                const comment = response.data
+                const commentList = document.querySelector(
+                    `#comment-list-${comment.postId}`)
+                const newComment = `
+                    ${comment.username} : ${comment.content}
+                    <i class="bi bi-heart comment_heart" data-post-id="${comment.postId}" data-comment-id="${comment.id}" onclick="comment_likeRequest(this, '${comment.postId}', '${comment.id}')">0명이 좋아합니다.</i>
+                    <button class="btn btn-light" onclick="commentDelete('${comment.postId},${comment.id}');">Delete</button>
+                </div>`;
+                commentList.insertAdjacentHTML('beforeEnd', newComment)
+                event.target.reset()
             })
+        })
     })
     </script>
 
