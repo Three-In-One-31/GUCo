@@ -8,7 +8,7 @@
     </div>
 
 
-    // post like
+    <!-- post like -->
     <script>
         let likeButtons = document.querySelectorAll("i.heart")
 
@@ -40,7 +40,7 @@
     </script>
 
 
-    // comment create
+    <!-- comment create -->
     <script> 
     let commentForm = document.querySelector('.comment-Form')
     commentForm.addEventListener('submit', function(event){
@@ -52,9 +52,9 @@
             const commentList = document.querySelector(
                 `#comment-list-${comment.postId}`)
             const newComment = `<div class="in">
-                        ${ comment.username } : ${ comment.content }
-                        <button onclick="commentDelete('${comment.postId},${comment.id}');">Delete</button>
-                    </div>`
+                ${comment.username} : ${comment.content}
+                <button onclick="commentDelete('${comment.postId},${comment.id}');">Delete</button>
+            </div>`;
             commentList.insertAdjacentHTML('beforeEnd', newComment)
             event.target.reset()
             })
@@ -62,7 +62,35 @@
     </script>
 
 
-    // comment_delete
+    <!-- comment update -->
+    <script>
+        function commentUpdate(value) {
+            var valuesArray = value.split(',')
+            var comment_id = valuesArray[1];
+            var post_id = valuesArray[0];
+            var commentyContent = $('.commentContent'+post_id+'-'+comment_id).val();
+            console.log(commentContent, valuesArray)
+
+            $.ajax({
+                type: 'POST',
+                url: `/posts/${post_id}/comments/${comment_id}/update/`,
+                dataType : 'json',
+                data: {
+                    'comment_id': comment_id,
+                    'post_id': post_id,
+                    'comment_content': commentContent,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                },
+                success: function(response) {
+                    $('#commentModal').modal('hide');
+                    location.reload();
+                },
+            });
+        }
+    </script>
+
+
+    <!-- comment_delete -->
     <script> 
         function commentDelete(value) {
             var valuesArray = value.split(',')
@@ -85,7 +113,7 @@
     </script>
 
 
-    // comment like
+    <!-- comment like  -->
     <script>
         let comment_likeButtons = document.querySelectorAll("i.comment_heart")
 
