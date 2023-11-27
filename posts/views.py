@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import Post, Comment
+from .models import Post, Comment, Reply
 from accounts.models import User
-from .forms import PostForm, CommentForm
+from .forms import PostForm, CommentForm, ReplyForm
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.http import HttpResponse
@@ -14,11 +14,13 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 def index(request):
     posts = Post.objects.all().order_by('-id')
-    comment_form = CommentForm()
+    form = CommentForm()
+    reply_form = ReplyForm()
 
     context = {
         'posts': posts,
-        'comment_form': comment_form,
+        'form': form,
+        'reply_form': reply_form,
     }
 
     return render(request, 'index.html', context)
@@ -173,5 +175,60 @@ def comment_likes_async(request, post_id, id):
         'post_id': post.id,
         'comment_id': comment.id,
     }
-
     return JsonResponse(context)
+
+
+@login_required
+def reply_create(request, post_id, comment_id):
+    reply_form = ReplyForm(request.POST)
+    if reply_form.is_valid():
+        reply = reply_form.save(commit=False)
+        reply.post_id = post_id
+        reply.user = request.user
+        reply.comment_id = comment_id
+        reply.save()
+
+    return JsonResponse({
+                            'id': reply.id,
+                            'postId': post_id,
+                            'commentId': comment_id,
+                            'username': reply.user.username,
+                            'content': reply.content,
+    })
+
+
+@login_required
+def reply_delete(request, post_id, comment_id, id):
+    reply = Reply.objects.get(id=id)
+
+    if request.user != reply.user:
+        return redirect('posts:index')
+    
+    else:
+        reply.delete()
+        data = {
+            'reply_id': id,
+            'post_id': post_id,
+            'comment_id' : comment_id,
+        }
+    
+    return HttpResponse(json.dumps(data, cls=DjangoJSONEncoder), content_type = 'application/json')
+
+
+@login_required
+def reply_update(request, post_id, comment_id, id):
+    reply = Reply.objects.get(id=id)
+
+    if request.user != reply.user:
+        return redirect('posts:index')
+
+    if request.method == 'POST':
+        reply.content = request.POST.get('reply_content')
+        reply.save()
+        data = {
+        'reply_id': id,
+        'post_id': post_id,
+        'comment_id' : comment_id,
+    }
+
+    return HttpResponse(json.dumps(data, cls=DjangoJSONEncoder), content_type = 'application/json')

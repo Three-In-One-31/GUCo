@@ -45,7 +45,32 @@
                 <a href="{% url 'posts:comment_update' post_id=post.id id=comment.id %}" class="btn btn-light">Update</a>   
                 <button class="btn btn-light" onclick="commentDelete('{{post.id}},{{comment.id}}');">Delete</button>
                 {% endif %}
-            </div>            
+            </div> 
+          
+            <ul id="reply-list-{{ post.id }}-{{ comment.id }}">
+                <style>div.in {text-indent: 5px;}</style>
+            {% for reply in comment.reply_set.all %}
+                    <div class="in">{{ reply.user }} : {{ reply.content }}
+                {% if user == reply.user %}
+                    <button onclick="replyDelete('{{post.id}},{{comment.id}},{{reply.id}}');">Delete</button>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#replyModal{{ post.id }}-{{ comment.id }}-{{ reply.id }}">Update</button>
+                        {% include '_replymodal.html' %}
+                {% endif %}
+                    </div>
+            {% endfor %}
+            </ul>
+
+                <p class="replybutton">답글 달기</p>
+                <div class="replyform_div" style="display: none;">
+                    {% if user.is_authenticated %}
+                    <form action="{% url 'posts:reply_create' post_id=post.id comment_id=comment.id %}" method="POST" class="reply-Form">
+                        {% csrf_token %}
+                        {{ reply_form }}
+                        <input type="submit">
+                    </form>
+                    {% endif %} 
+                </div>
+          
         </div>
     {% endfor %}
     </ul>
@@ -60,6 +85,5 @@
     {% endif %}
     
     <hr>
-
 
 </div>
