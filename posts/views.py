@@ -14,12 +14,12 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 def index(request):
     posts = Post.objects.all().order_by('-id')
-    form = CommentForm()
+    comment_form = CommentForm()
     reply_form = ReplyForm()
 
     context = {
         'posts': posts,
-        'form': form,
+        'comment_form': comment_form,
         'reply_form': reply_form,
     }
 
