@@ -38,6 +38,23 @@
         <div style="margin-bottom: 3px; background-color: rgb(247, 247, 247); display: flex; flex-direction: row; justify-content: space-between;">
         <p>{{ comment.user }} : {{ comment.content }} </p>
         <a style="text-align: right;" href="{% url 'posts:comment_delete' post_id=post.id id=comment.id %}">Delete</a>
+        <script>
+            function deleteComment(e) {
+                const commentId = e.target.href.split("/")[5];
+                fetch("/post/<post_id>/comment/<id>/delete", {
+                    method: "DELETE",
+                })
+                .then((response) => {
+                    if (response.status === True) {
+                        const commentElement = document.querySelector(`#comment-${commentId}`);
+                        commentElement.remove();
+                    }
+                });
+            }
+            document.querySelectorAll(".delete-comment").forEach((element) => {
+                element.addEventListener("click", deleteComment);
+                });        
+        </script>
     </div>
     {% else %}
     <p style="margin-bottom: 3px;">
@@ -47,7 +64,7 @@
     {% endfor %}
     
     {% if user.is_authenticated %}
-    <form action="{% url 'posts:comment_create' post_id=post.id %}" method="POST">
+    <form id="comment-content" action="{% url 'posts:comment_create' post_id=post.id %}" method="POST">
         {% csrf_token %}
         {{ form }}
         <input type="submit">
