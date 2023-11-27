@@ -1,6 +1,6 @@
 {% load bootstrap5 %}
 
-<div class="card my-3 col-12 col-md-6">
+<div class="card my-3 col-12 col-md-5 mx-2">
     
     <div class="card-header">
         {% if post.user.profile_image %}
@@ -20,28 +20,33 @@
     <img src="{{ post.image.url }}" alt="">
 
     <div class="card-body">
+        {% if user in post.like_users.all %}
+            <i class="bi bi-heart-fill heart" style="color:red" data-post-id="{{ post.id }}">{{ post.like_users.all|length }}</i>
+        {% else %}
+            <i class="bi bi-heart heart" data-post-id="{{ post.id }}">{{ post.like_users.all|length }}</i>
+        {% endif %}
+        명이 좋아합니다.
         <p class="cart-text">{{ post.content }}</p>
     </div>
 
     <hr>
 
-    {% if user.is_authenticated %}
-        <form action="{% url 'posts:comment_create' post_id=post.id %}" method="POST">
-            {% csrf_token %}
-            {{ form }}
-            <input type="submit">
-        </form>
-    {% endif %}
-    
-    <hr>
-
+    <ul id="comment-list-{{ post.id }}">
     {% for comment in post.comment_set.all %}
-        <div>
-            {{ comment.user }} : {{ comment.content }}
-            {% if user == comment.user %}
-                <a href="{% url 'posts:comment_delete' post_id=post.id id=comment.id %}">Delete</a>
-            {% endif %}
-
+        <div style="display: flex; align-items: center;">
+            <div>{{ comment.user }} : {{ comment.content }}</div>
+            <div class="card-body" style="margin-left: auto;">
+                {% if user in comment.like_users.all %}
+                <i class="bi bi-heart-fill comment_heart" style="color:red" data-post-id="{{ post.id }}" data-comment-id="{{ comment.id }}" onclick="comment_likeRequest(this, '{{ post.id }}', '{{ comment.id }}')">{{ comment.like_users.all|length }}명이 좋아합니다.</i> 
+                {% else %}
+                <i class="bi bi-heart comment_heart" data-post-id="{{ post.id }}" data-comment-id="{{ comment.id }}" onclick="comment_likeRequest(this, '{{ post.id }}', '{{ comment.id }}')">{{ comment.like_users.all|length }}명이 좋아합니다.</i>                
+                {% endif %}
+                {% if user == comment.user %}
+                <a href="{% url 'posts:comment_update' post_id=post.id id=comment.id %}" class="btn btn-light">Update</a>   
+                <button class="btn btn-light" onclick="commentDelete('{{post.id}},{{comment.id}}');">Delete</button>
+                {% endif %}
+            </div> 
+          
             <ul id="reply-list-{{ post.id }}-{{ comment.id }}">
                 <style>div.in {text-indent: 5px;}</style>
             {% for reply in comment.reply_set.all %}
@@ -65,7 +70,20 @@
                     </form>
                     {% endif %} 
                 </div>
-        </div>            
+          
+        </div>
     {% endfor %}
+    </ul>
+
+
+    {% if user.is_authenticated %}
+    <form action="{% url 'posts:comment_create' post_id=post.id %}" method="POST" class="comment-Form">
+        {% csrf_token %}
+        {{ comment_form }}
+        <input type="submit" value="Submit">
+    </form>
+    {% endif %}
+    
+    <hr>
 
 </div>
