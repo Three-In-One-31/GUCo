@@ -1,6 +1,6 @@
 {% load bootstrap5 %}
 
-<div class="card my-3 col-12 col-md-6">
+<div class="card my-3 col-12 col-md-5 mx-2">
     
     <div style="display: flex; flex-direction: row; justify-content: space-between;" class="card-header">
         <div>
@@ -26,50 +26,70 @@
     <img src="{{ post.image.url }}" alt="">
 
     <div class="card-body">
-        <p class="card-text">{{ post.content }}</p>
-        <hr>
-        {% if post.comment_set.all|length == 0 %}
-        <p>댓글이 없습니다.</p>
+        {% if user in post.like_users.all %}
+            <i class="bi bi-heart-fill heart" style="color:red" data-post-id="{{ post.id }}">{{ post.like_users.all|length }}</i>
+        {% else %}
+            <i class="bi bi-heart heart" data-post-id="{{ post.id }}">{{ post.like_users.all|length }}</i>
         {% endif %}
-        
-        
-        {% for comment in post.comment_set.all %}
-        {% if user == comment.user %}
-        <div style="margin-bottom: 3px; background-color: rgb(247, 247, 247); display: flex; flex-direction: row; justify-content: space-between;">
-        <p>{{ comment.user }} : {{ comment.content }} </p>
-        <a style="text-align: right;" href="{% url 'posts:comment_delete' post_id=post.id id=comment.id %}">Delete</a>
-        <script>
-            function deleteComment(e) {
-                const commentId = e.target.href.split("/")[5];
-                fetch("/post/<post_id>/comment/<id>/delete", {
-                    method: "DELETE",
-                })
-                .then((response) => {
-                    if (response.status === True) {
-                        const commentElement = document.querySelector(`#comment-${commentId}`);
-                        commentElement.remove();
-                    }
-                });
-            }
-            document.querySelectorAll(".delete-comment").forEach((element) => {
-                element.addEventListener("click", deleteComment);
-                });        
-        </script>
+        명이 좋아합니다.
+        <p class="cart-text">{{ post.content }}</p>
     </div>
-    {% else %}
-    <p style="margin-bottom: 3px;">
-        {{ comment.user }} : {{ comment.content }}
-    </p>
-    {% endif %}
+
+    <hr>
+
+    <ul id="comment-list-{{ post.id }}">
+    {% for comment in post.comment_set.all %}
+        <div style="margin-bottom: 3px; background-color: rgb(247, 247, 247); display: flex; flex-direction: row; justify-content: space-between;">
+            <div style="margin-bottom: 3px;">{{ comment.user }} : {{ comment.content }}</div>
+            <div class="card-body" style="margin-left: auto;">
+                {% if user in comment.like_users.all %}
+                <i class="bi bi-heart-fill comment_heart" style="color:red" data-post-id="{{ post.id }}" data-comment-id="{{ comment.id }}" onclick="comment_likeRequest(this, '{{ post.id }}', '{{ comment.id }}')">{{ comment.like_users.all|length }}명이 좋아합니다.</i> 
+                {% else %}
+                <i class="bi bi-heart comment_heart" data-post-id="{{ post.id }}" data-comment-id="{{ comment.id }}" onclick="comment_likeRequest(this, '{{ post.id }}', '{{ comment.id }}')">{{ comment.like_users.all|length }}명이 좋아합니다.</i>                
+                {% endif %}
+                
+                {% if user == comment.user %}
+                <a href="{% url 'posts:comment_update' post_id=post.id id=comment.id %}" class="btn btn-light">Update</a>   
+                <button style="text-align: right;" class="btn btn-light" onclick="commentDelete('{{post.id}},{{comment.id}}');">Delete</button>
+                {% endif %}
+            </div> 
+          
+            <ul id="reply-list-{{ post.id }}-{{ comment.id }}">
+                <style>div.in {text-indent: 5px;}</style>
+            {% for reply in comment.reply_set.all %}
+                    <div class="in">{{ reply.user }} : {{ reply.content }}
+                {% if user == reply.user %}
+                    <button onclick="replyDelete('{{post.id}},{{comment.id}},{{reply.id}}');">Delete</button>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#replyModal{{ post.id }}-{{ comment.id }}-{{ reply.id }}">Update</button>
+                        {% include '_replymodal.html' %}
+                {% endif %}
+                    </div>
+            {% endfor %}
+            </ul>
+
+            <p class="replybutton">답글 달기</p>
+            <div class="replyform_div" style="display: none;">
+                {% if user.is_authenticated %}
+                <form action="{% url 'posts:reply_create' post_id=post.id comment_id=comment.id %}" method="POST" class="reply-Form">
+                    {% csrf_token %}
+                    {{ reply_form }}
+                    <input type="submit">
+                </form>
+                {% endif %} 
+            </div>
+        </div>
     {% endfor %}
-    
+    </ul>
+
+
     {% if user.is_authenticated %}
-    <form id="comment-content" action="{% url 'posts:comment_create' post_id=post.id %}" method="POST">
+    <form action="{% url 'posts:comment_create' post_id=post.id %}" method="POST" class="comment-Form">
         {% csrf_token %}
-        {{ form }}
-        <input type="submit">
+        {{ comment_form }}
+        <input type="submit" value="Submit">
     </form>
     {% endif %}
-    </div>
+    
+    <hr>
 
 </div>
