@@ -24,13 +24,37 @@
 
     <div class="container-fluid mt-2 mx-2 d-flex" style="height: 60em;">
         <div class="bg-primary d-flex" style="flex: 1; flex-direction: column;">
-            <div class="bg-warning m-2" style="flex: 3;">이웃의 글 리스트</div>
-            <div class="bg-info m-2" style="flex: 7;">모든 이용자의 글 리스트</div>
+            <div class="bg-warning m-2" style="flex: 3;">
+                이웃의 글 리스트
+            </div>
+            <div class="bg-info m-2 align" style="flex: 7;">
+                <div>
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                          <a class="nav-link active" aria-current="page" href="#">전체</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="#">태그1</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="#">태그2</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    모든 이용자의 글 리스트
+                </div>
+            </div>
         </div>
         <div class="bg-danger d-flex" style="width: 15em; flex-direction: column;">
             <div class="bg-warning m-2" style="height: 7em;">프로필</div>
-            <div class="bg-info m-2" style="height: 2em;">게시물 작성 버튼</div>
-            <div class="bg-white m-2" style="flex: 1;"> 나의 리스트</div>
+            <button type="button" class="btn btn-primary m-2">게시글 작성 버튼</button>    
+            <div class="bg-white m-2" style="flex: 1;">
+                <div class="d-grid gap-2 d-flex m-2 justify-content-around">
+                    <button class="btn btn-primary" type="button">Button</button>
+                    <button class="btn btn-primary" type="button">Button</button>
+                </div>
+            </div>
         </div>
     </div>
 
