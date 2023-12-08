@@ -13,16 +13,23 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 def index(request):
     posts = Post.objects.all().order_by('-id')
-    comment_form = CommentForm()
-    reply_form = ReplyForm()
 
     context = {
-        'posts': posts,
-        'comment_form': comment_form,
-        'reply_form': reply_form,
+        'posts': posts
     }
 
     return render(request, 'index.html', context)
+
+    # comment_form = CommentForm()
+    # reply_form = ReplyForm()
+
+    # context = {
+    #     'posts': posts,
+    #     'comment_form': comment_form,
+    #     'reply_form': reply_form,
+    # }
+
+    # return render(request, 'index.html', context)
 
 
 @login_required
