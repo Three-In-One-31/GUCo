@@ -53,8 +53,9 @@
                 {% endif %}
                 
                 {% if user == comment.user %}
-                <a href="{% url 'posts:comment_update' post_id=post.id id=comment.id %}" class="btn btn-light">Update</a>   
-                <button style="text-align: right;" class="btn btn-light" onclick="commentDelete('{{post.id}},{{comment.id}}');">Delete</button>
+                    <button style="text-align: right;" class="btn btn-light" onclick="commentDelete('{{post.id}},{{comment.id}}');">Delete</button>
+                    <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#commentModal{{ post.id }}-{{ comment.id }}">Update</button>
+                        {% include '_commentmodal.html' %}
                 {% endif %}
             </div> 
           
