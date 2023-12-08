@@ -70,8 +70,8 @@
             var valuesArray = value.split(',')
             var comment_id = valuesArray[1];
             var post_id = valuesArray[0];
-            var commentyContent = $('.commentContent'+post_id+'-'+comment_id).val();
-            console.log(commentContent, valuesArray)
+            var commentContent = $('.commentContent'+post_id+'-'+comment_id).val();
+            // console.log(commentContent, valuesArray)
 
             $.ajax({
                 type: 'POST',
@@ -196,7 +196,7 @@
             var comment_id = valuesArray[1];
             var post_id = valuesArray[0];
             var replyContent = $('.replyContent'+post_id+'-'+comment_id+'-'+reply_id).val();
-            console.log(replyContent, valuesArray)
+            // console.log(replyContent, valuesArray)
 
             $.ajax({
                 type: 'POST',
