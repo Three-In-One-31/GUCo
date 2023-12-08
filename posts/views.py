@@ -11,7 +11,6 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 # Create your views here.
 
-
 def index(request):
     posts = Post.objects.all().order_by('-id')
     comment_form = CommentForm()
