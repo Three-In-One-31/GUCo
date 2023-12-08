@@ -1,31 +1,43 @@
+<!-- signup 공간 -->
+
+<!-- 전체 공간 -->
 <section class="container text-center">
+    <!-- 회원가입임을 명시하는 박스 -->
     <div class="mt-5 py-5">
+        <!-- 회원가입 문구 -->
         <h1 class="fw-bold">회원가입</h1>
     </div>
+    <!-- 입력 -->
     <form action="" class="row w-75 m-auto justify-content-center" method="POST" enctype="multipart/form-data">
         <div class="col-md-6 col-xl-5">
             <div class="form-floating mb-3">
+                <!-- input user_id -->
                 <input type="text" maxlength="8" class="form-control" id="user_id" placeholder="id" required>
+                <!-- 아이디 입력 라벨 -->
                 <label for="user_id">아이디</label>
             </div>
         </div>
 
         <div class="col-md-6 col-xl-5">
             <div class="form-floating mb-3">
+                <!-- input password -->
                 <input type="password" class="form-control" id="password" placeholder="Password" required>
+                <!-- 비밀번호 입력 라벨 -->
                 <label for="password">비밀번호</label>
             </div>
         </div>
 
-
         <div class="col-12 col-xl-10 text-start">
             <div class="mb-3">
+                <!-- 프로필 이미지 라벨 -->
                 <label for="profile_image" class="form-label">프로필 이미지</label>
+                <!-- input profile_image -->
                 <input class="form-control" type="file" id="profile_image">
               </div>
         </div>
 
         <div class="col-12 mt-5 text-end">
+            <!-- 제출 버튼 -->
             <button class="btn btn-primary" type="submit">제출</button>
         </div>
     </form>
