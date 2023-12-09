@@ -31,6 +31,13 @@ def home(request):
 
     # return render(request, 'index.html', context)
 
+def detail(request, id):
+    post = Post.objects.get(id=id)
+
+    context = {
+        'post':post,
+    }
+    return render(request, 'blogDetail/base.html', context)
 
 @login_required
 def create(request):
@@ -66,7 +73,7 @@ def update(request, id):
     post = Post.objects.get(id=id)
 
     if request.user != post.user:
-        return redirect('posts:home')
+        return redirect('posts:detail')
 
     if request.method == 'POST':
         form = PostForm(request.POST, instance=post)
@@ -74,7 +81,7 @@ def update(request, id):
             post = form.save(commit=False)
             post.user = request.user
             post.save()
-            return redirect('posts:home')
+            return redirect('posts:detail', id=post.id)
     
     else:
         form = PostForm(instance=post)

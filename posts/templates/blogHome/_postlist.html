@@ -28,7 +28,7 @@
                       <img src="/media/profile/default.jpeg" alt="" class="rounded-circle" width="30px">
                   {% endif %}
                   {{ post.user }}
-                  <pre><a href="">{{ post.title }}</a></pre>
+                  <pre><a href="{% url 'posts:detail' id=post.id %}">{{ post.title }}</a></pre>
                   <hr>
                 {% endfor %}
         </div>
