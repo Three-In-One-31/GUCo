@@ -20,9 +20,6 @@
                 <p>{{ user.username }}</p>  
             </div>
             <!-- 로그아웃 버튼 -->
-            <!-- <button type="button" class="btn btn-secondary mx-1" style="width: 3.5rem; height: 1.75rem; --bs-btn-padding-y: .25rem; --bs-btn-padding-x: .rem; --bs-btn-font-size: 0.75rem;">
-                로그아웃
-            </button> -->
             {% if user.is_authenticated %}
                 <a href="{% url 'accounts:logout' %}" class="btn btn-secondary mx-1" style="width: 3.5rem; height: 1.75rem; --bs-btn-padding-y: .25rem; --bs-btn-padding-x: .rem; --bs-btn-font-size: 0.75rem;">로그아웃</a>
             <!-- 로그인 버튼 -->
@@ -30,9 +27,6 @@
                 <a href="{% url 'accounts:login' %}" class="btn btn-secondary mx-1" style="width: 3.5rem; height: 1.75rem; --bs-btn-padding-y: .25rem; --bs-btn-padding-x: .rem; --bs-btn-font-size: 0.75rem;">로그인</a>
             {% endif %}
             <!-- 게시글 작성 버튼 -->
-            <!-- <button type="button" class="btn btn-primary mt-2">
-                게시글 작성 버튼
-            </button> -->
             <a class="btn btn-primary mt-2" href="{% url 'posts:create' %}">게시글 작성</a>    
         </div>
     </div>
