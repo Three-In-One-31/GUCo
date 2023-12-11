@@ -11,7 +11,7 @@ def signup(request):
         form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('posts:index')
+            return redirect('posts:home')
     else:
         form = CustomUserCreationForm()
     context ={
@@ -26,7 +26,7 @@ def login(request):
         if form.is_valid():
             auth_login(request, form.get_user())
             next_url = request.GET.get('next')
-            return redirect(next_url or 'posts:index')
+            return redirect(next_url or 'posts:home')
     else:
         form = CustomAuthenticationForm()
     context = {
@@ -37,7 +37,7 @@ def login(request):
 
 def logout(request):
     auth_logout(request)
-    return redirect('posts:index')
+    return redirect('posts:home')
 
 
 def profile(request, username):

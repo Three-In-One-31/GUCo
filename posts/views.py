@@ -11,14 +11,14 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 # Create your views here.
 
-def index(request):
+def home(request):
     posts = Post.objects.all().order_by('-id')
 
     context = {
         'posts': posts
     }
 
-    return render(request, 'index.html', context)
+    return render(request, 'blogHome/base.html', context)
 
     # comment_form = CommentForm()
     # reply_form = ReplyForm()
@@ -31,6 +31,13 @@ def index(request):
 
     # return render(request, 'index.html', context)
 
+def detail(request, id):
+    post = Post.objects.get(id=id)
+
+    context = {
+        'post':post,
+    }
+    return render(request, 'blogDetail/base.html', context)
 
 @login_required
 def create(request):
@@ -40,7 +47,7 @@ def create(request):
             post = form.save(commit=False)
             post.user = request.user
             post.save()
-            return redirect('posts:index')
+            return redirect('posts:home')
     
     else:
         form = PostForm()
@@ -58,7 +65,7 @@ def delete(request, id):
     if request.user == post.user:
         post.delete()
 
-    return redirect('posts:index')
+    return redirect('posts:home')
 
 
 @login_required
@@ -66,7 +73,7 @@ def update(request, id):
     post = Post.objects.get(id=id)
 
     if request.user != post.user:
-        return redirect('posts:index')
+        return redirect('posts:detail')
 
     if request.method == 'POST':
         form = PostForm(request.POST, instance=post)
@@ -74,7 +81,7 @@ def update(request, id):
             post = form.save(commit=False)
             post.user = request.user
             post.save()
-            return redirect('posts:index')
+            return redirect('posts:detail', id=post.id)
     
     else:
         form = PostForm(instance=post)
@@ -108,7 +115,7 @@ def comment_update(request, post_id, id):
     comment = Comment.objects.get(id=id)
 
     if request.user != comment.user:
-        return redirect('posts:index')
+        return redirect('posts:home')
     
     if request.method == 'POST':
         comment.content = request.POST.get('comment_content')
@@ -126,7 +133,7 @@ def comment_delete(request, post_id, id):
     comment = Comment.objects.get(id=id)
 
     if request.user != comment.user:
-        return redirect('posts:index')
+        return redirect('posts:home')
     
     else:
         comment.delete()
@@ -208,7 +215,7 @@ def reply_delete(request, post_id, comment_id, id):
     reply = Reply.objects.get(id=id)
 
     if request.user != reply.user:
-        return redirect('posts:index')
+        return redirect('posts:home')
     
     else:
         reply.delete()
@@ -226,7 +233,7 @@ def reply_update(request, post_id, comment_id, id):
     reply = Reply.objects.get(id=id)
 
     if request.user != reply.user:
-        return redirect('posts:index')
+        return redirect('posts:home')
 
     if request.method == 'POST':
         reply.content = request.POST.get('reply_content')
