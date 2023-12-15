@@ -88,6 +88,13 @@
         </div>
         <!-- 댓글을 보여주는 공간 -->
         <div class="collapse my-1" id="comment">
+            {% if user.is_authenticated %}
+            <form action="{% url 'posts:comment_create' post_id=post.id %}" method="POST" class="comment-Form">
+                {% csrf_token %}
+                {{ comment_form }}
+                <input type="submit" value="Submit">
+            </form>
+            {% endif %}
             <!-- 작성자 프로필, 아이디를 보여주기 위한 공간 -->
             <div class="">
             <ul id="comment-list-{{ post.id }}">
@@ -130,6 +137,13 @@
                 <div class="collapse ms-2" id="reply">
                     <!-- reply 전체 틀 (ㄴ은 임시로 둠, 변경 가능)-->
                     <div class="d-flex">
+                        {% if user.is_authenticated %}
+                        <form action="{% url 'posts:reply_create' post_id=post.id comment_id=comment.id %}" method="POST" class="reply-Form">
+                            {% csrf_token %}
+                            {{ reply_form }}
+                            <input type="submit">
+                        </form>
+                        {% endif %}
                         <ul id="reply-list-{{ post.id }}-{{ comment.id }}">
                             {% for reply in comment.reply_set.all %}
                                 <!-- 이미지를 넣을 공간, 공간의 크기는 1.5rem 크기의 정사각형을 기준으로 둥글게 만듬 -->

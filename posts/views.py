@@ -22,9 +22,13 @@ def home(request):
 
 def detail(request, id):
     post = Post.objects.get(id=id)
+    comment_form = CommentForm()
+    reply_form = ReplyForm()
 
     context = {
         'post':post,
+        'comment_form':comment_form,
+        'reply_form':reply_form,
     }
     return render(request, 'blogDetail/base.html', context)
 
@@ -81,6 +85,23 @@ def update(request, id):
 
     return render(request, 'form.html', context)
 
+def create(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            return redirect('posts:home')
+    
+    else:
+        form = PostForm()
+
+    context = {
+        'form': form
+    }
+
+    return render(request, 'form.html', context)
 
 @login_required
 def comment_create(request, post_id):
