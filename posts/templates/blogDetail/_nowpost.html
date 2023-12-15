@@ -54,9 +54,9 @@
     <div>
         <p class="d-inline-flex gap-1"> 
             <!-- 좋아요를 누른 사람을 보는 버튼 (이후 콜랩스와 연결됨)-->
-            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#like_users" aria-expanded="false" aria-controls="like_users">
+            <!-- <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#like_users" aria-expanded="false" aria-controls="like_users">
                 좋아요
-            </button>
+            </button> -->
             <!-- 좋아요 버튼 -->
             {% if user in post.like_users.all %}
                 <i class="bi bi-heart-fill heart align-self-center" style="color:red; font-size: 1.3rem;" data-post-id="{{ post.id }}">{{ post.like_users.all|length }} </i>
