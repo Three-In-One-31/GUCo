@@ -20,17 +20,6 @@ def home(request):
 
     return render(request, 'blogHome/base.html', context)
 
-    # comment_form = CommentForm()
-    # reply_form = ReplyForm()
-
-    # context = {
-    #     'posts': posts,
-    #     'comment_form': comment_form,
-    #     'reply_form': reply_form,
-    # }
-
-    # return render(request, 'index.html', context)
-
 def detail(request, id):
     post = Post.objects.get(id=id)
 
