@@ -1,3 +1,31 @@
-<article class="m-2 rounded-2" style="border: 2px solid black; height: 15rem;">
-    <p>전체게시글</p>
+<article class="m-2 rounded-2" style="border: 2px solid black;">
+    <div class="d-flex gap-1 justify-content-between">
+        <p class="m-2">카테고리명</p>
+        <button class="btn btn-primary ms-auto m-1" type="button" data-bs-toggle="collapse" data-bs-target="#allPost" aria-expanded="false">
+            목록 열기
+        </button>
+    </div>
+    <div class="collapse" id="allPost">
+    <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action active" aria-current="true">현재 게시글</a>
+        <a href="#" class="list-group-item list-group-item-action">게시글</a>
+    </div>  
+        <nav class="mt-auto">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </article>
