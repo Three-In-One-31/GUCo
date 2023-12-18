@@ -1,32 +1,53 @@
 <div class="m-2">
     <p class="d-inline-flex gap-1">
-        <button class="btn btn-primary" data-bs-toggle="collapse" href="#likeUsers" role="button" aria-expanded="false">
-          공감
-        </button>
-        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#comment" aria-expanded="false">
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button class="btn btn-outline-primary" data-bs-toggle="collapse" href="#likeUsers" role="button" aria-expanded="false">
+                공감
+            </button>
+            <button type="button" class="btn btn-outline-primary">
+                {% if user in post.like_users.all %}
+                    <i class="bi bi-heart-fill heart align-self-center" style="color:red; font-size: 1rem;" data-post-id="{{ post.id }}">{{ post.like_users.all|length }} </i>
+                {% else %}
+                    <i class="bi bi-heart heart align-self-center" style="font-size: 1rem;" data-post-id="{{ post.id }}">{{ post.like_users.all|length }} </i>
+                {% endif %}
+            </button>
+        </div>
+        <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#comment" aria-expanded="false">
           댓글
         </button>
       </p>
+
       <div class="collapse" id="comment">
         <hr>
-        <div class="d-flex align-items-center" style="width: 100%;">
-            <div class="m-1" style="width: 30px; height: 30px; border-radius: 70%; overflow: hidden;">
-                <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fdi0GrI%2FbtqyyWdEYM8%2FLbDOJG6QuYVXzFI9AlMq60%2Fimg.png" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+        {% for comment in post.comment_set.all %}
+            <div class="d-flex align-items-center" style="width: 100%;">
+                {% if comment.user.profile_image %}
+                    <div class="m-1" style="width: 30px; height: 30px; border-radius: 70%; overflow: hidden;">
+                        <img src="{{ comment.user.profile_image.url }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                {% else %}
+                    <div class="m-1" style="width: 30px; height: 30px; border-radius: 70%; overflow: hidden;">
+                        <img src="/media/profile/default.jpeg" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                {% endif %}
+                <div class="mx-2">
+                    <p style="font-size: 0.75rem;">{{ comment.user }}</p>
+                </div>
+                <div class="dropdown ms-auto">
+                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">답글달기</a></li>
+                        <li><a class="dropdown-item" href="#">수정하기</a></li>
+                        <li><a class="dropdown-item" href="#">삭제하기</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="bg-danger">
-                <p style="font-size: 0.75rem;">아이디</p>
-            </div>
-            <div class="dropdown ms-auto">
-                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">답글달기</a></li>
-                    <li><a class="dropdown-item" href="#">수정하기</a></li>
-                    <li><a class="dropdown-item" href="#">삭제하기</a></li>
-                </ul>
-            </div>
-        </div>
-        <p>댓글 내용 글자 수 제한 해야함</p>
-        <hr>
+            <p>{{ comment.content }}</p>
+            <p class="m-0" style="font-size: 0.75rem; color: rgb(143, 143, 143);">{{ comment.updated_at }}</p>
+
+            <hr>
+        {% endfor%}
+
         <div class="ms-2">
             <div class="d-flex align-items-center" style="width: 100%;">
                 ㄴ
@@ -64,3 +85,5 @@
         </div>
       </div>
 </div>
+
+<script src="__comment&reply.js"></script>

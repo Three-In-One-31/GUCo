@@ -1,20 +1,24 @@
 <div class="m-2 rounded-2" style="border: 2px solid rgb(0, 0, 0);">
-    <div class="my-2 mx-auto" style="width: 130px; height: 130px; border-radius: 70%; overflow: hidden;">
-        <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fdi0GrI%2FbtqyyWdEYM8%2FLbDOJG6QuYVXzFI9AlMq60%2Fimg.png" alt="" style="width: 100%; height: 100%; object-fit: cover;">
-    </div>
-    <div class="d-flex justify-content-between align-items-center px-1" style="width: 100%;">
-        <div class="bg-danger mx-2">
-            아이디
+    {% if post.user.profile_image %}
+        <div class="my-2 mx-auto" style="width: 130px; height: 130px; border-radius: 70%; overflow: hidden;">
+            <img src="{{ post.user.profile_image.url }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
-        <button type="button" class="btn btn-primary ms-auto me-2" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 0.75rem;">게시글 작성</button>
+    {% else %}
+        <div class="my-2 mx-auto" style="width: 130px; height: 130px; border-radius: 70%; overflow: hidden;">
+            <img src="/media/profile/default.jpeg" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+    {% endif %}
+    <div class="d-flex justify-content-between align-items-center px-1" style="width: 100%;">
+        <div class="mx-3">
+            {{ post.user }}
+        </div>
+        <button onclick="location.href='/posts/create/'" type="button" class="btn btn-primary ms-auto me-3" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: 0.75rem;">게시글 작성</button>
     </div>
-    <div class="p-2 overflow-auto" >
-        글자길이 제한 둬야함 (현재 글자 길이가100)
-        글자길이 제한 둬야함 (현재 글자 길이가100)
-        글자길이 제한 둬야함 (현재 글자 길이가100)
-        글자길이 제한 둬야함 (현재 글자 길이가100)
+    <div class="p-2 overflow-auto" style=" height: 15rem;">
+        소개를 적는 공간. 내용이 길어지면 자동으로 스크롤바가 생성됩니다. 
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore, veniam? 
+        Corporis ad commodi velit, quas, quidem quisquam praesentium magnam 
+        excepturi expedita aliquid culpa totam ea molestias delectus. Minus, 
+        dolorum nobis.
     </div>
-</div>
-<div class="m-2 p-1 rounded-2" style="border: 2px solid rgb(0, 0, 0); height: 30rem;">
-    카테고리
 </div>
