@@ -25,9 +25,7 @@
                 <!-- 다음에 작성하는 글을 end부분에 적음 -->
                 <div class="col text-end">
                     <!-- 게시글 작성을 위한 버튼 style 부분은 사이즈 조정 -->
-                    <button type="button" class="btn btn-primary mt-3" style="width: 5rem; height: 2rem; --bs-btn-padding-y: .25rem; --bs-btn-padding-x: .rem; --bs-btn-font-size: .75rem;">
-                        게시글 작성
-                    </button>  
+                    <a class="btn btn-primary mt-3" style="width: 5rem; height: 2rem; --bs-btn-padding-y: .25rem; --bs-btn-padding-x: .rem; --bs-btn-font-size: .75rem;" href="{% url 'posts:create' %}">게시글 작성</a>
                 </div>
             </div>
             <!-- 블로그 주인의 소개를 적는 공간, 글이 박스보다 길어지면 스크롤 생성 -->
