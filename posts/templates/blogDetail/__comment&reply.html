@@ -1,6 +1,6 @@
 <div class="m-2">
     <p class="d-inline-flex gap-1">
-        <div class="btn-group" role="group" aria-label="Basic example">
+        <div class="btn-group" role="group" aria-label="">
             <button class="btn btn-outline-primary" data-bs-toggle="collapse" href="#likeUsers" role="button" aria-expanded="false">
                 공감
             </button>
@@ -12,7 +12,7 @@
                 {% endif %}
             </button>
         </div>
-        <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#comment" aria-expanded="false">
+        <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#comment" aria-expanded="false" aria-controls="comment">
           댓글
         </button>
       </p>
@@ -20,55 +20,99 @@
       <div class="collapse" id="comment">
         <hr>
         {% for comment in post.comment_set.all %}
+
+        <!-- comment -->
+        <div class="d-flex align-items-center" style="width: 100%;">
+            {% if comment.user.profile_image %}
+                <div class="m-1" style="width: 30px; height: 30px; border-radius: 70%; overflow: hidden;">
+                    <img src="{{ comment.user.profile_image.url }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+            {% else %}
+                <div class="m-1" style="width: 30px; height: 30px; border-radius: 70%; overflow: hidden;">
+                    <img src="/media/profile/default.jpeg" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+            {% endif %}
+            <div class="mx-2">
+                <p class="m-0" style="font-size: 1rem;">{{ comment.user }}</p>
+                <p class="m-0" style="font-size: 0.75rem; color: rgb(143, 143, 143);">{{ comment.updated_at }}</p>
+            </div>
+            {% if user == comment.user %}
+                <div class="dropdown ms-auto">
+                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                    <ul class="dropdown-menu">
+                        <li><button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#commentModal{{ post.id }}-{{ comment.id }}">수정하기</button></li>
+                            {% include '_commentmodal.html' %}
+                        <li><button onclick="commentDelete('{{post.id}},{{comment.id}}');" class="dropdown-item" href="#">삭제하기</button></li>
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+        <p class="mt-2 ms-1">{{ comment.content }}</p>
+        <div class="d-flex align-items-center" style="width: 100%;">
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#reply-list-{{ post.id }}-{{ comment.id }}" aria-expanded="false" aria-controls="reply" style="--bs-btn-padding-y: 0rem; --bs-btn-padding-x: .3rem; --bs-btn-font-size: .75rem;">답글</button>
+            
+            <div class="mt-1 ms-auto me-2">
+            {% if user in comment.like_users.all %}
+                <i class="bi bi-heart-fill comment_heart align-self-center " style="color:red; font-size: 1rem;" data-post-id="{{ post.id }}" data-comment-id="{{ comment.id }}" onclick="comment_likeRequest(this, '{{ post.id }}', '{{ comment.id }}')">{{ comment.like_users.all|length }}</i> 
+            {% else %}
+                <i class="bi bi-heart comment_heart align-self-center" style="font-size: 1rem;" data-post-id="{{ post.id }}" data-comment-id="{{ comment.id }}" onclick="comment_likeRequest(this, '{{ post.id }}', '{{ comment.id }}')">{{ comment.like_users.all|length }}</i>                
+            {% endif %}
+            </div>
+        </div>
+
+        <div class="collapse" id="reply-list-{{ post.id }}-{{ comment.id }}">
+            {% if user.is_authenticated %}
+            <form action="{% url 'posts:reply_create' post_id=post.id comment_id=comment.id %}" method="POST" class="reply-Form">
+                {% csrf_token %}
+                {{ reply_form }}
+                <input type="submit">
+            </form>
+            {% endif %}
+        </div>
+        
+        <!-- reply -->
+        <div class="ms-2">
+            {% for reply in comment.reply_set.all %}
             <div class="d-flex align-items-center" style="width: 100%;">
-                {% if comment.user.profile_image %}
+                ㄴ
+                {% if reply.user.profile_image %}
                     <div class="m-1" style="width: 30px; height: 30px; border-radius: 70%; overflow: hidden;">
-                        <img src="{{ comment.user.profile_image.url }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                        <img src="{{ reply.user.profile_image.url }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                 {% else %}
                     <div class="m-1" style="width: 30px; height: 30px; border-radius: 70%; overflow: hidden;">
                         <img src="/media/profile/default.jpeg" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                 {% endif %}
-                <div class="mx-2">
-                    <p style="font-size: 0.75rem;">{{ comment.user }}</p>
+                <div>
+                    <p class="m-0" style="font-size: 1rem;">{{ reply.user }}</p>
+                    <p class="m-0" style="font-size: 0.75rem; color: rgb(143, 143, 143);">{{ reply.updated_at }}</p>
                 </div>
-                <div class="dropdown ms-auto">
-                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">답글달기</a></li>
-                        <li><a class="dropdown-item" href="#">수정하기</a></li>
-                        <li><a class="dropdown-item" href="#">삭제하기</a></li>
-                    </ul>
-                </div>
+                {% if user == comment.user %}
+                    <div class="dropdown ms-auto">
+                        <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                        <ul class="dropdown-menu">
+                            <li><button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#replyModal{{ post.id }}-{{ comment.id }}-{{ reply.id }}">수정하기</button></li>
+                                {% include '_replymodal.html' %}
+                            <li><button onclick="replyDelete('{{post.id}},{{comment.id}},{{reply.id}}');" class="dropdown-item" href="#">삭제하기</button></li>
+                        </ul>
+                    </div>
+                {% endif %}
             </div>
-            <p>{{ comment.content }}</p>
-            <p class="m-0" style="font-size: 0.75rem; color: rgb(143, 143, 143);">{{ comment.updated_at }}</p>
-
-            <hr>
-        {% endfor%}
-
-        <div class="ms-2">
-            <div class="d-flex align-items-center" style="width: 100%;">
-                ㄴ
-                <div class="m-1" style="width: 30px; height: 30px; border-radius: 70%; overflow: hidden;">
-                    <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fdi0GrI%2FbtqyyWdEYM8%2FLbDOJG6QuYVXzFI9AlMq60%2Fimg.png" alt="" style="width: 100%; height: 100%; object-fit: cover;">
-                </div>
-                <div class="bg-danger">
-                    <p style="font-size: 0.75rem;">아이디</p>
-                </div>
-                <div class="dropdown ms-auto">
-                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">답글달기</a></li>
-                        <li><a class="dropdown-item" href="#">수정하기</a></li>
-                        <li><a class="dropdown-item" href="#">삭제하기</a></li>
-                    </ul>
-                </div>
-            </div>
-            <p class="ms-3">댓글 내용 글자 수 제한 해야함</p>
+            <p class="ms-3">{{ reply.content }}</p>
+            {% endfor %}
         </div>
-        <hr>
+
+        {% endfor %}
+
+ 
+        {% if user.is_authenticated %}
+        <form action="{% url 'posts:comment_create' post_id=post.id %}" method="POST" class="comment-Form">
+            {% csrf_token %}
+            {{ comment_form }}
+            <input type="submit" value="댓글 작성">
+        </form>
+        {% endif %}
       </div>
 
       <div class="collapse" id="likeUsers">
@@ -86,4 +130,4 @@
       </div>
 </div>
 
-<script src="__comment&reply.js"></script>
+{% include 'blogDetail/__comment&reply_js.html' %}

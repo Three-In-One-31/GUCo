@@ -1,36 +1,35 @@
-// post like 
+<!-- post like -->
+<script>
+    let likeButtons = document.querySelectorAll("i.heart")
 
-let likeButtons = document.querySelectorAll("i.heart")
-
-likeButtons.forEach((likeButton)=>{            
-    likeButton.addEventListener("click", (event)=>{
-        let postId = event.target.dataset.postId 
-        likeRequest(event.target, postId)
+    likeButtons.forEach((likeButton)=>{            
+        likeButton.addEventListener("click", (event)=>{
+            let postId = event.target.dataset.postId 
+            likeRequest(event.target, postId)
+        })
     })
-})
 
-let likeRequest = async (button, postId) => {
-    let likeURL = `/posts/${postId}/likes-async/`
-    let response = await fetch(likeURL)
-    let result = await response.json()
+    let likeRequest = async (button, postId) => {
+        let likeURL = `/posts/${postId}/likes-async/`
+        let response = await fetch(likeURL)
+        let result = await response.json()
 
-    if (result.status) {
-        button.classList.remove('bi-heart')
-        button.classList.add('bi-heart-fill')
-        button.style.color = 'red'
-        
-    } else {
-        button.classList.remove('bi-heart-fill')
-        button.classList.add('bi-heart')
-        button.style.color = 'black'
+        if (result.status) {
+            button.classList.remove('bi-heart')
+            button.classList.add('bi-heart-fill')
+            button.style.color = 'red'
+            
+        } else {
+            button.classList.remove('bi-heart-fill')
+            button.classList.add('bi-heart')
+            button.style.color = 'black'
+        }
+    button.innerHTML = result.count;
     }
-button.innerHTML = result.count;
-}
 
 
 
 // comment create
-
 let commentForms = document.querySelectorAll('.comment-Form')
 commentForms.forEach(function(commentForm){    
     commentForm.addEventListener('submit', function(event){
@@ -53,9 +52,7 @@ commentForms.forEach(function(commentForm){
 })
 
 
-
-// comment update 
-
+// comment update
 function commentUpdate(value) {
     var valuesArray = value.split(',')
     var comment_id = valuesArray[1];
@@ -83,7 +80,6 @@ function commentUpdate(value) {
 
 
 // comment_delete
-
 function commentDelete(value) {
     var valuesArray = value.split(',')
     var comment_id = valuesArray[1];
@@ -105,8 +101,7 @@ function commentDelete(value) {
 
 
 
-// comment like
-
+// comment like 
 let comment_likeRequest = async (button, postId, commentId) => {
     let likeURL = `/posts/${postId}/comments/${commentId}/likes-async/`;
     try {
@@ -158,51 +153,52 @@ replyForms.forEach(function(replyForm){
 
 
 // reply_delete
-function replyDelete(value) {
-    var valuesArray = value.split(',')
-    var reply_id = valuesArray[2];
-    var comment_id = valuesArray[1];
-    var post_id = valuesArray[0];
-    $.ajax({
-        type : 'POST',
-        url : `/posts/${post_id}/comments/${comment_id}/replys/${reply_id}/delete/`,
-        dataType : 'json',
-        data : {
-            'reply_id' : reply_id,
-            'comment_id': comment_id,
-            'post_id': post_id,
-            'csrfmiddlewaretoken': '{{csrf_token}}',
-        },
-        success: function(response){
-            location.reload()
-        }
-    })
-}
+    function replyDelete(value) {
+        var valuesArray = value.split(',')
+        var reply_id = valuesArray[2];
+        var comment_id = valuesArray[1];
+        var post_id = valuesArray[0];
+        $.ajax({
+            type : 'POST',
+            url : `/posts/${post_id}/comments/${comment_id}/replys/${reply_id}/delete/`,
+            dataType : 'json',
+            data : {
+                'reply_id' : reply_id,
+                'comment_id': comment_id,
+                'post_id': post_id,
+                'csrfmiddlewaretoken': '{{csrf_token}}',
+            },
+            success: function(response){
+                location.reload()
+            }
+        })
+    }
 
 // reply_update
-function replyUpdate(value) {
-    var valuesArray = value.split(',')
-    var reply_id = valuesArray[2];
-    var comment_id = valuesArray[1];
-    var post_id = valuesArray[0];
-    var replyContent = $('.replyContent'+post_id+'-'+comment_id+'-'+reply_id).val();
-    // console.log(replyContent, valuesArray)
+    function replyUpdate(value) {
+        var valuesArray = value.split(',')
+        var reply_id = valuesArray[2];
+        var comment_id = valuesArray[1];
+        var post_id = valuesArray[0];
+        var replyContent = $('.replyContent'+post_id+'-'+comment_id+'-'+reply_id).val();
+        // console.log(replyContent, valuesArray)
 
-    $.ajax({
-        type: 'POST',
-        url: `/posts/${post_id}/comments/${comment_id}/replys/${reply_id}/update/`,
-        dataType : 'json',
-        data: {
-            'reply_id' : reply_id,
-            'comment_id': comment_id,
-            'post_id': post_id,
-            'reply_content': replyContent,
-            'csrfmiddlewaretoken': '{{ csrf_token }}',
-        },
-        success: function(response) {
-            $('#replyModal').modal('hide');
-            location.reload();
-        },
-    });
-}
+        $.ajax({
+            type: 'POST',
+            url: `/posts/${post_id}/comments/${comment_id}/replys/${reply_id}/update/`,
+            dataType : 'json',
+            data: {
+                'reply_id' : reply_id,
+                'comment_id': comment_id,
+                'post_id': post_id,
+                'reply_content': replyContent,
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            success: function(response) {
+                $('#replyModal').modal('hide');
+                location.reload();
+            },
+        });
+    }
     
+</script>
