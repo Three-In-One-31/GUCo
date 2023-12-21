@@ -1,10 +1,31 @@
-<!-- blogDetail에서 오른쪽의 상단 부분 -->
-<!-- 아직 세부 사항 작성 x -->
-
-<!-- 테두리 -->
-<div class="m-2 p-2 rounded-2" style="flex: 1; border: 2px solid rgb(0, 0, 0);">
-    <hr class="my-1">
-    <p>현재 카테고리 내의 글</p>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non illum voluptates iure reiciendis tenetur voluptatum adipisci maxime rem quis earum. Quas voluptatum commodi possimus dicta suscipit quam ipsum doloribus numquam?</p>
-    <hr class="my-1">
-</div>
+<article class="m-2 rounded-2" style="border: 2px solid black;">
+    <div class="d-flex gap-1 justify-content-between">
+        <p class="m-2">카테고리명</p>
+        <button class="btn btn-primary ms-auto m-1" type="button" data-bs-toggle="collapse" data-bs-target="#allPost" aria-expanded="false">
+            목록 열기
+        </button>
+    </div>
+    <div class="collapse" id="allPost">
+    <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action active" aria-current="true">현재 게시글</a>
+        <a href="#" class="list-group-item list-group-item-action">게시글</a>
+    </div>  
+        <nav class="mt-auto">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</article>
