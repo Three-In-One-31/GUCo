@@ -7,8 +7,13 @@
     </div>
     <div class="collapse" id="allPost">
     <div class="list-group">
-        <a href="#" class="list-group-item list-group-item-action active" aria-current="true">현재 게시글</a>
-        <a href="#" class="list-group-item list-group-item-action">게시글</a>
+        {% for userpost in post.user.post_set.all %}
+            {% if post.id == userpost.id %}
+                <a href="{% url 'posts:detail' id=userpost.id %}" class="list-group-item list-group-item-action active" aria-current="true">{{ userpost.title }}</a>
+            {% else %}
+                <a href="{% url 'posts:detail' id=userpost.id %}" class="list-group-item list-group-item-action">{{ userpost.title }}</a>
+            {% endif %}
+        {% endfor %}
     </div>  
         <nav class="mt-auto">
             <ul class="pagination justify-content-center">
