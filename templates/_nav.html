@@ -14,9 +14,9 @@
         <!-- 네비게이션 -->
         <ul class="navbar-nav">
             <!-- 네비 내용 목록 -->
-            <li class="nav-item">
-            <!-- 목록 중 blog 링크 -->
-            <a class="nav-link" href="#">blog</a>
+            <li class="nav-item"><a class="nav-link" href="#">blog</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">로그인</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'accounts:logout' %}">로그아웃</a></li>
         </ul>
         </div>
     </div>
