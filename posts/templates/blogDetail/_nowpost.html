@@ -13,9 +13,15 @@
             {% endif %}
         </div>
         <div class="d-flex align-items-center" style="width: 100%;">
+            {% if post.user.profile_image %}
             <div class="m-1" style="width: 30px; height: 30px; border-radius: 70%; overflow: hidden;">
                 <img src="{{ post.user.profile_image.url }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
+            {% else %}
+            <div class="m-1" style="width: 30px; height: 30px; border-radius: 70%; overflow: hidden;">
+                <img src="/media/profile/default.jpeg" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            {% endif %}
             <div class="mx-2">
                 <p class="m-0" style="font-size: 1rem;">{{ post.user }}</p>
                 <p class="m-0" style="font-size: 0.75rem; color: rgb(143, 143, 143);">{{ post.updated_at }}</p>
