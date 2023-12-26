@@ -45,16 +45,16 @@ def profile(request, username):
     context = {
         'profileuser': profileuser,
     }
-    return render(request, 'profile.html', context)
+    return render(request, 'posts/blogHome/base.html', context)
 
 
 def follows(request, username):
     me = request.user
-    profileuser = User.objects.get(username=username)
+    you = User.objects.get(username=username)
 
-    if profileuser in me.followings.all():
-        me.followings.remove(profileuser)
+    if you in me.followings.all():
+        me.followings.remove(you)
     else:
-        me.followings.add(profileuser)
-
-    return redirect('accounts:profile', username=username)
+        me.followings.add(you)
+    
+    return redirect('http://127.0.0.1:8000/posts/', username=username)
