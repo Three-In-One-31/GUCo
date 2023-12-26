@@ -22,11 +22,13 @@ def home(request):
 
 def detail(request, id):
     post = Post.objects.get(id=id)
+    sorted_posts = post.user.post_set.all().order_by('-created_at')
     comment_form = CommentForm()
     reply_form = ReplyForm()
 
     context = {
         'post':post,
+        'sorted_posts':sorted_posts,
         'comment_form':comment_form,
         'reply_form':reply_form,
     }
