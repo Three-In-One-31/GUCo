@@ -11,6 +11,7 @@ class Post(models.Model):
         crop = ['middle', 'center'],
         upload_to = 'image/%Y/%m',
     )
+    category = models.CharField(max_length=30)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_posts')
     created_at = models.DateTimeField(auto_now_add=True)

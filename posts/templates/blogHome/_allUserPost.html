@@ -2,18 +2,18 @@
     <div>
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">전체</a>
+                <a class="nav-link active" aria-current="page" href="#",>전체</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">분류1</a>
+                <a class="nav-link" href="#">맛집</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">분류2</a>
+                <a class="nav-link" href="#">취미</a>
             </li>
         </ul>
     </div>
 
-    <div class="m-2 rounded-2 d-flex" style="flex-direction: column;">
+    <div id='allPosts' class="m-2 rounded-2 d-flex" style="flex-direction: column;">
         {% for post in posts %}
             {% if post.user.profile_image %}
                 <div class="d-flex align-items-center" style="width: 100%;">
@@ -69,3 +69,6 @@
         </ul>
     </nav>
 </article>
+
+
+{% include 'blogHome/_allUserPost_js.html' %}
