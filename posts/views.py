@@ -211,7 +211,7 @@ def reply_create(request, post_id, comment_id):
         reply.post_id = post_id
         reply.user = request.user
         reply.comment_id = comment_id
-        reply.save()
+        reply.save() 
 
     return JsonResponse({
                             'id': reply.id,
