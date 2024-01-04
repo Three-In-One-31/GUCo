@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Post, Comment, Reply
+from .models import Post, Comment, Reply, Category
 from accounts.models import User
 from .forms import PostForm, CommentForm, ReplyForm
 from django.contrib.auth.decorators import login_required
@@ -10,6 +10,27 @@ from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
 
 # Create your views here.
+
+def catemp(request):
+    categories = Category.objects.all()
+    if not categories:
+        categories = Category()
+        categories.category_name = '기본 카테고리'
+        categories.save()
+
+    context = {
+        'categories': categories,
+    }
+    return render(request, 'blogDetail/catemp.html', context)
+
+def Create_catemp(request):
+    return HttpResponse('카테고리 생성')
+
+def Update_catemp(request):
+    return HttpResponse('카테고리 수정')
+
+def Delete_catemp(request):
+    return HttpResponse('카테고리 삭제')
 
 def home(request):
     posts = Post.objects.all().order_by('-id')
@@ -25,12 +46,14 @@ def detail(request, id):
     sorted_posts = post.user.post_set.all().order_by('-created_at')
     comment_form = CommentForm()
     reply_form = ReplyForm()
+    categories = Category.objects.all()
 
     context = {
         'post':post,
         'sorted_posts':sorted_posts,
         'comment_form':comment_form,
         'reply_form':reply_form,
+        'categories':categories
     }
     return render(request, 'blogDetail/base.html', context)
 

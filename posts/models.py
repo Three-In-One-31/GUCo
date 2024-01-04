@@ -3,7 +3,11 @@ from django_resized import ResizedImageField
 from django.conf import settings
 
 # Create your models here.
+class Category(models.Model):
+    category_name = models.CharField(max_length=50)
+
 class Post(models.Model):
+    # category = models.ForeignKey(Category, on_delete=models.SET_DEFAULT, default=)
     title = models.CharField(max_length=100)
     content = models.TextField()
     image = ResizedImageField(
@@ -15,7 +19,6 @@ class Post(models.Model):
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_posts')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
 
 class Comment(models.Model):
     content = models.TextField()
