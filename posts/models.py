@@ -4,6 +4,10 @@ from django.conf import settings
 
 # Create your models here.
 class Post(models.Model):
+    TAG_CHOICES = [
+        ('RESTAURANT', '맛집'),
+        ('HOBBY', '취미'),
+    ]
     title = models.CharField(max_length=100)
     content = models.TextField()
     image = ResizedImageField(
@@ -11,6 +15,7 @@ class Post(models.Model):
         crop = ['middle', 'center'],
         upload_to = 'image/%Y/%m',
     )
+    tag = models.CharField(max_length=30, choices = TAG_CHOICES)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_posts')
     created_at = models.DateTimeField(auto_now_add=True)
