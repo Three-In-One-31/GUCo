@@ -26,17 +26,13 @@
                 <p class="m-0" style="font-size: 1rem;">{{ post.user }}</p>
                 <p class="m-0" style="font-size: 0.75rem; color: rgb(143, 143, 143);">{{ post.updated_at }}</p>
             </div>
-            </div>
             {% if user != post.user %}
-            <div class="col-4">
                 {% if user in post.user.followers.all %}
                     <a href="{% url 'accounts:follows' username=post.user %}" class="btn btn-secondary ms-auto" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">이웃해제</a>
                 {% else %}
                     <a href="{% url 'accounts:follows' username=post.user %}" class="btn btn-secondary ms-auto" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">이웃추가</a>
                 {% endif %}
-            </div>
             {% endif %}
-            <!-- <button type="button" class="btn btn-secondary ms-auto" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">이웃추가</button> -->
         </div>
         <hr>
         <img src="{{ post.image.url }}" alt="">
