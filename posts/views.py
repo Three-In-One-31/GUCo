@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .models import Post, Comment, Reply, Category
+from .models import *
 from accounts.models import User
 from .forms import PostForm, CommentForm, ReplyForm
 from django.contrib.auth.decorators import login_required
@@ -32,7 +32,7 @@ def detail(request, id):
         'sorted_posts':sorted_posts,
         'comment_form':comment_form,
         'reply_form':reply_form,
-        'categories':categories
+        'categories':categories,
     }
     return render(request, 'blogDetail/base.html', context)
 

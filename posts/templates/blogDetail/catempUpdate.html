@@ -52,7 +52,8 @@
 
         {% endif %}
     {% endfor %}
-    <form action="./create" method="POST" onsubmit="return categoryAddCheckFrom();">{% csrf_token %}
+    <form action="./create" method="POST" onsubmit="return categoryAddCheckFrom();">
+        {% csrf_token %}
         <div class="input-group mt-4">
             <input id="categoryName" name="categoryName" type="text" class="form-control ms-1" placeholder="추가할 카테고리명을 입력" style="border-radius:4px;">
             <input type="submit" class="resAddBtn btn btn-primary me-1" role="button" value="추가"/>
