@@ -7,7 +7,7 @@ class Category(models.Model):
     category_name = models.CharField(max_length=50)
 
 class Post(models.Model):
-    # category = models.ForeignKey(Category, on_delete=models.SET_DEFAULT, default=)
+    category = models.ForeignKey(Category, on_delete=models.SET_DEFAULT, default='1')
     title = models.CharField(max_length=100)
     content = models.TextField()
     image = ResizedImageField(

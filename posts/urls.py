@@ -26,5 +26,4 @@ urlpatterns = [
     path('catemp/update', views.Update_catemp, name='catempUpdate'),
     path('catemp/delete', views.Delete_catemp, name='catempDelete'),
 
-    
 ]
