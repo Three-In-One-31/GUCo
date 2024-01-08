@@ -84,7 +84,6 @@ def create(request):
             post.user = request.user
             post.save()
             return redirect('posts:home')
-    
     else:
         form = PostForm()
         
