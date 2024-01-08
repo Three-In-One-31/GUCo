@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
-from .models import Post, Comment, Reply
+from django.urls import reverse
+from .models import *
 from accounts.models import User
 from .forms import PostForm, CommentForm, ReplyForm
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
-from django.http import HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 import json
 from django.core import serializers
 from django.core.serializers.json import DjangoJSONEncoder
@@ -25,14 +25,55 @@ def detail(request, id):
     sorted_posts = post.user.post_set.all().order_by('-created_at')
     comment_form = CommentForm()
     reply_form = ReplyForm()
+    categories = Category.objects.all()
 
     context = {
         'post':post,
         'sorted_posts':sorted_posts,
         'comment_form':comment_form,
         'reply_form':reply_form,
+        'categories':categories,
     }
     return render(request, 'blogDetail/base.html', context)
+
+def catemp(request):
+    categories = Category.objects.all()
+    if not categories:
+        categories = Category()
+        categories.category_name = '기본 카테고리'
+        categories.save()
+
+    context = {
+        'categories': categories,
+    }
+    return render(request, 'blogDetail/catemp.html', context)
+
+@login_required
+def Create_catemp(request):
+    category_name = request.POST['categoryName']
+    new_category = Category(category_name = category_name)
+    new_category.save()
+
+    categories = Category.objects.all()
+    context = {
+        'categories': categories,
+    }
+    return HttpResponseRedirect(reverse('posts:catempPage'))
+
+@login_required
+def Update_catemp(request):
+    categories = Category.objects.all()
+    context = {
+        'categories': categories,
+    }
+    return render(request, 'blogDetail/catempUpdate.html', context)
+
+@login_required
+def Delete_catemp(request):
+    category_id = request.POST['categoryId']
+    delete_category = Category.objects.get(id = category_id)
+    delete_category.delete()
+    return HttpResponseRedirect(reverse('posts:catempPage'))
 
 @login_required
 def create(request):
@@ -43,12 +84,12 @@ def create(request):
             post.user = request.user
             post.save()
             return redirect('posts:home')
-    
     else:
         form = PostForm()
-
+        
     context = {
-        'form': form
+        'form': form, 
+        'categories':categories,
     }
 
     return render(request, 'form.html', context)

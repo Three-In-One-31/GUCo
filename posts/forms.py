@@ -1,10 +1,11 @@
 from django import forms
-from .models import Post, Comment, Reply
+from .models import *
 
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         exclude = ('user', 'like_users', )
+
 
 class CommentForm(forms.ModelForm):
     class Meta:
@@ -22,7 +23,6 @@ class CommentForm(forms.ModelForm):
         labels = {
             'content': '',
         }
-
 
 class ReplyForm(forms.ModelForm):
     class Meta:
