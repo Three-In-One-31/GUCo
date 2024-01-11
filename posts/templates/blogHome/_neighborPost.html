@@ -2,6 +2,7 @@
                 
     <div class="m-2 rounded-2 d-flex" style="flex-direction: column;">
         <h4>내 이웃의 글</h4>
+        {% if user.is_authenticated %}
           {% if request.user.followings.all|length == 0 %}
             이웃을 추가해보세요!
           {% else %}
@@ -28,6 +29,10 @@
               {% endfor %}
             {% endfor %}
           {% endif %}
+        {% else %}
+         로그인이 필요합니다.
+        {% endif %}
+
 
 
     </div>
