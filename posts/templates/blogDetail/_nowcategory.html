@@ -8,11 +8,23 @@
     <div class="collapse" id="allPost">
     <div class="list-group">
         {% for userpost in sorted_posts %}
+        {% if userpost.category_id == post.category_id  %}
             {% if post.id == userpost.id %}
-                <a href="{% url 'posts:detail' id=userpost.id %}" class="list-group-item list-group-item-action active" aria-current="true">{{ userpost.title }}</a>
+                <a href="{% url 'posts:detail' id=userpost.id %}" class="list-group-item list-group-item-action active" aria-current="true">
+                    <div class="d-flex">
+                        {{ userpost.title }}
+                        <p class="ms-auto my-0" style="color: rgb(143, 143, 143);">{{ post.created_at }}</p>
+                    </div>
+                </a>
             {% else %}
-                <a href="{% url 'posts:detail' id=userpost.id %}" class="list-group-item list-group-item-action">{{ userpost.title }}</a>
+                <a href="{% url 'posts:detail' id=userpost.id %}" class="list-group-item list-group-item-action">
+                    <div class="d-flex">
+                        {{ userpost.title }}
+                        <p class="ms-auto my-0" style="color: rgb(143, 143, 143);">{{ post.created_at }}</p>
+                    </div>
+                </a>
             {% endif %}
+        {% endif %}
         {% endfor %}
     </div>  
         <nav class="mt-auto">

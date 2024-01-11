@@ -73,7 +73,9 @@
             <form action="{% url 'posts:reply_create' post_id=post.id comment_id=comment.id %}" method="POST" class="reply-Form">
                 {% csrf_token %}
                 {{ reply_form }}
-                <input type="submit">
+                <div class="mt-3 d-flex">
+                    <input type="submit" class="ms-auto btn btn-secondary" value="답글 작성">
+                </div>
             </form>
             {% endif %}
         </div>
@@ -114,12 +116,13 @@
         <hr>
         {% endfor %}
 
- 
         {% if user.is_authenticated %}
         <form action="{% url 'posts:comment_create' post_id=post.id %}" method="POST" class="comment-Form">
             {% csrf_token %}
             {{ comment_form }}
-            <input type="submit" value="댓글 작성">
+            <div class="mt-3 d-flex">
+                <input type="submit" class="ms-auto btn btn-secondary" value="댓글 작성">
+            </div>
         </form>
         {% endif %}
       </div>

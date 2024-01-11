@@ -20,4 +20,10 @@ urlpatterns = [
     path('<int:post_id>/comments/<int:comment_id>/replys/create/', views.reply_create, name='reply_create'),
     path('<int:post_id>/comments/<int:comment_id>/replys/<int:id>/delete/', views.reply_delete, name='reply_delete'),
     path('<int:post_id>/comments/<int:comment_id>/replys/<int:id>/update/', views.reply_update, name='reply_update'),
+
+    path('catemp/', views.catemp, name='catempPage'),
+    path('catemp/create', views.Create_catemp, name='catempCreate'),
+    path('catemp/update', views.Update_catemp, name='catempUpdate'),
+    path('catemp/delete', views.Delete_catemp, name='catempDelete'),
+
 ]
