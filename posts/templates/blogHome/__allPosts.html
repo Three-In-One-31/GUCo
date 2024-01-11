@@ -18,9 +18,9 @@
                 {% if user != post.user and user.is_authenticated %}
                 <div class="col-4">
                     {% if user in post.user.followers.all %}
-                        <a href="{% url 'accounts:followsHome' username=post.user %}" class="btn btn-secondary ms-auto" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">이웃해제</a>
+                        <a href="{% url 'posts:followsHome' username=post.user %}" class="btn btn-secondary ms-auto" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">이웃해제</a>
                     {% else %}
-                        <a href="{% url 'accounts:followsHome' username=post.user %}" class="btn btn-secondary ms-auto" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">이웃추가</a>
+                        <a href="{% url 'posts:followsHome' username=post.user %}" class="btn btn-secondary ms-auto" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">이웃추가</a>
                     {% endif %}
                 </div>
                 {% endif %}

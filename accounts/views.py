@@ -49,33 +49,8 @@ def profile(request, username):
     return render(request, 'posts/blogHome/base.html', context)
 
 
-@login_required
-def followsHome(request, username):
-    me = request.user
-    you = User.objects.get(username=username)
-
-    if you in me.followings.all():
-        me.followings.remove(you)
-    else:
-        me.followings.add(you)
-    
-    return redirect('posts:home')
 
 
 
-# @login_required
-# def followsDetail(request, username, id):
-#     me = request.user
-#     you = User.objects.get(username=username)
-#     post = Post.objects.get(id=id)
 
-#     if you in me.followings.all():
-#         me.followings.remove(you)
-#     else:
-#         me.followings.add(you)
 
-#     context = {
-#         'post': post,
-#     }
-
-#     return render(request, 'posts:detail', context)
