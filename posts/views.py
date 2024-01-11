@@ -15,7 +15,7 @@ def home(request):
     posts = Post.objects.all().order_by('-id')
 
     context = {
-        'posts': posts
+        'posts': posts,
     }
 
     return render(request, 'blogHome/base.html', context)
@@ -311,7 +311,7 @@ def followsHome(request, username):
         me.followings.add(you)
     
     return redirect('posts:home')
-    
+
 
 @login_required
 def followsDetail(request, username, id):
