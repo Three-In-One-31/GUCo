@@ -15,7 +15,7 @@ def home(request):
     posts = Post.objects.all().order_by('-id')
 
     context = {
-        'posts': posts
+        'posts': posts,
     }
 
     return render(request, 'blogHome/base.html', context)
@@ -252,7 +252,7 @@ def reply_create(request, post_id, comment_id):
         reply.post_id = post_id
         reply.user = request.user
         reply.comment_id = comment_id
-        reply.save()
+        reply.save() 
 
     return JsonResponse({
                             'id': reply.id,
@@ -298,3 +298,34 @@ def reply_update(request, post_id, comment_id, id):
     }
 
     return HttpResponse(json.dumps(data, cls=DjangoJSONEncoder), content_type = 'application/json')
+
+
+@login_required
+def followsHome(request, username):
+    me = request.user
+    you = User.objects.get(username=username)
+
+    if you in me.followings.all():
+        me.followings.remove(you)
+    else:
+        me.followings.add(you)
+    
+    return redirect('posts:home')
+
+
+@login_required
+def followsDetail(request, username, id):
+    me = request.user
+    you = User.objects.get(username=username)
+    post = Post.objects.get(id=id)
+
+    if you in me.followings.all():
+        me.followings.remove(you)
+    else:
+        me.followings.add(you)
+
+    context = {
+        'post': post,
+    }
+
+    return redirect('posts:detail', id=post.id)

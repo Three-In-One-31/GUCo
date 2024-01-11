@@ -3,7 +3,8 @@ from .forms import CustomUserCreationForm, CustomAuthenticationForm
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from .models import User
-
+from django.contrib.auth.decorators import login_required
+from posts.models import Post
 
 # Create your views here.
 def signup(request):
@@ -34,7 +35,7 @@ def login(request):
     }
     return render(request, 'accounts_form.html', context)
 
-
+@login_required
 def logout(request):
     auth_logout(request)
     return redirect('posts:home')
@@ -48,13 +49,8 @@ def profile(request, username):
     return render(request, 'posts/blogHome/base.html', context)
 
 
-def follows(request, username):
-    me = request.user
-    you = User.objects.get(username=username)
 
-    if you in me.followings.all():
-        me.followings.remove(you)
-    else:
-        me.followings.add(you)
-    
-    return redirect('http://127.0.0.1:8000/posts/', username=username)
+
+
+
+

@@ -84,7 +84,7 @@
         <div class="ms-2">
             {% for reply in comment.reply_set.all %}
             <div class="d-flex align-items-center" style="width: 100%;">
-                ㄴ
+                
                 {% if reply.user.profile_image %}
                     <div class="m-1" style="width: 30px; height: 30px; border-radius: 70%; overflow: hidden;">
                         <img src="{{ reply.user.profile_image.url }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
