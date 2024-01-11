@@ -26,7 +26,7 @@
                 <p class="m-0" style="font-size: 1rem;">{{ post.user }}</p>
                 <p class="m-0" style="font-size: 0.75rem; color: rgb(143, 143, 143);">{{ post.updated_at }}</p>
             </div>
-            <!-- {% if user != post.user %}
+            <!-- {% if user != post.user and user.is_authenticated %}
                 {% if user in post.user.followers.all %}
                     <a href="{% url 'accounts:followsDetail' username=post.user.username %}" class="btn btn-secondary ms-auto" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">이웃해제</a>
                 {% else %}
